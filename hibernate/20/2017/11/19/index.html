@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>SSH与SSM学习之hibernate20——多对多操作 | qiwenming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ssm,hibernate">
+    <meta name="description" content="SSH与SSM学习之hibernate20——多对多操作一、说明关于多对多的关系可以查看 SSH与SSM学习之hibernate16——表与表的三种关系。 这里我们涉及到的是 用户（员工）与角色之间的多对多的关系。  二、 用户（员工）实体2.1 User.java123456789101112131415161718** * @author：qiwenming * @date：2017/9/19">
+<meta name="keywords" content="ssm,hibernate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH与SSM学习之hibernate20——多对多操作">
+<meta property="og:url" content="http://qiwenming.github.io/hibernate/20/2017/11/19/index.html">
+<meta property="og:site_name" content="qiwenming">
+<meta property="og:description" content="SSH与SSM学习之hibernate20——多对多操作一、说明关于多对多的关系可以查看 SSH与SSM学习之hibernate16——表与表的三种关系。 这里我们涉及到的是 用户（员工）与角色之间的多对多的关系。  二、 用户（员工）实体2.1 User.java123456789101112131415161718** * @author：qiwenming * @date：2017/9/19">
+<meta property="og:image" content="http://img.blog.csdn.net/20170919234526579?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170919234536794?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170919234548563?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170919234622747?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170919234717540?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2018-01-18T13:51:53.584Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSH与SSM学习之hibernate20——多对多操作">
+<meta name="twitter:description" content="SSH与SSM学习之hibernate20——多对多操作一、说明关于多对多的关系可以查看 SSH与SSM学习之hibernate16——表与表的三种关系。 这里我们涉及到的是 用户（员工）与角色之间的多对多的关系。  二、 用户（员工）实体2.1 User.java123456789101112131415161718** * @author：qiwenming * @date：2017/9/19">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170919234526579?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+    
+        <link rel="alternate" type="application/atom+xml" title="qiwenming" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">qiwenming</h5>
+          <a href="mailto:qiwenmingshiwo@163.com" title="qiwenmingshiwo@163.com" class="mail">qiwenmingshiwo@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/qiwenming" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://blog.csdn.net/qiwenmingshiwo" target="_blank" >
+                <i class="icon icon-lg icon-csdn"></i>
+                Csdn
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SSH与SSM学习之hibernate20——多对多操作</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SSH与SSM学习之hibernate20——多对多操作</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-19T13:52:11.000Z" itemprop="datePublished" class="page-time">
+  2017-11-19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#SSH与SSM学习之hibernate20——多对多操作"><span class="post-toc-text">SSH与SSM学习之hibernate20——多对多操作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、说明"><span class="post-toc-text">一、说明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、-用户（员工）实体"><span class="post-toc-text">二、 用户（员工）实体</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-1-User-java"><span class="post-toc-text">2.1 User.java</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-2-User-hbm-xml"><span class="post-toc-text">2.2 User.hbm.xml</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、角色实体"><span class="post-toc-text">三、角色实体</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-1-Role-java"><span class="post-toc-text">3.1 Role.java</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-2-Role-hbm-xml"><span class="post-toc-text">3.2 Role.hbm.xml</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、保存用户以及角色"><span class="post-toc-text">四、保存用户以及角色</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-1-产生的问题以及解决"><span class="post-toc-text">4.1 产生的问题以及解决</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-2-代码实例"><span class="post-toc-text">4.2 代码实例</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-3-结果"><span class="post-toc-text">4.3 结果</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、为用户添加角色"><span class="post-toc-text">五、为用户添加角色</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-1-问题说明"><span class="post-toc-text">5.1 问题说明</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-2-示例代码"><span class="post-toc-text">5.2 示例代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-3-结果"><span class="post-toc-text">5.3 结果</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#六、为用户删除角色"><span class="post-toc-text">六、为用户删除角色</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-1-示例代码"><span class="post-toc-text">6.1 示例代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-2-结果"><span class="post-toc-text">6.2 结果</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-hibernate/20"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">SSH与SSM学习之hibernate20——多对多操作</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-19 21:52:11" datetime="2017-11-19T13:52:11.000Z"  itemprop="datePublished">2017-11-19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="SSH与SSM学习之hibernate20——多对多操作"><a href="#SSH与SSM学习之hibernate20——多对多操作" class="headerlink" title="SSH与SSM学习之hibernate20——多对多操作"></a>SSH与SSM学习之hibernate20——多对多操作</h1><h2 id="一、说明"><a href="#一、说明" class="headerlink" title="一、说明"></a>一、说明</h2><p>关于多对多的关系可以查看 <a href="http://blog.csdn.net/qiwenmingshiwo/article/details/78025056" target="_blank" rel="noopener">SSH与SSM学习之hibernate16——表与表的三种关系</a>。</p>
+<p>这里我们涉及到的是 用户（员工）与角色之间的多对多的关系。</p>
+<hr>
+<h2 id="二、-用户（员工）实体"><a href="#二、-用户（员工）实体" class="headerlink" title="二、 用户（员工）实体"></a>二、 用户（员工）实体</h2><h3 id="2-1-User-java"><a href="#2-1-User-java" class="headerlink" title="2.1 User.java"></a>2.1 User.java</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">**</span><br><span class="line"> * @author：qiwenming</span><br><span class="line"> * @date：2017/9/19 0019   20:57</span><br><span class="line"> * @description：</span><br><span class="line"> * 用户类</span><br><span class="line"> */</span><br><span class="line">public class User &#123;</span><br><span class="line">    private Long user_id;</span><br><span class="line">    private String user_code;</span><br><span class="line">    private String user_name;</span><br><span class="line">    private String user_password;</span><br><span class="line">    private Character user_state;</span><br><span class="line">    </span><br><span class="line">    //表达多对多关系</span><br><span class="line">    private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    ....省略了get/set方法...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-User-hbm-xml"><a href="#2-2-User-hbm-xml" class="headerlink" title="2.2 User.hbm.xml"></a>2.2 User.hbm.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;&gt;</span><br><span class="line">&lt;hibernate-mapping package=&quot;com.qwm.hibernate03.domain&quot; &gt;</span><br><span class="line">    &lt;class name=&quot;User&quot; table=&quot;sys_user&quot; &gt;</span><br><span class="line">        &lt;id name=&quot;user_id&quot;  &gt;</span><br><span class="line">            &lt;generator class=&quot;native&quot;&gt;&lt;/generator&gt;</span><br><span class="line">        &lt;/id&gt;</span><br><span class="line">        &lt;property name=&quot;user_code&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;user_name&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;user_password&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;user_state&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;!-- 多对多关系表达 --&gt;</span><br><span class="line">        &lt;!--</span><br><span class="line">            name: 集合属性名</span><br><span class="line">            table: 配置中间表名</span><br><span class="line">            key</span><br><span class="line">             |-column:外键,别人引用&quot;我&quot;的外键列名</span><br><span class="line">             class: 我与哪个类是多对多关系</span><br><span class="line">             column:外键.我引用比人的外键列名</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;set name=&quot;roles&quot; table=&quot;sys_user_role&quot;&gt;</span><br><span class="line">            &lt;!----&gt;</span><br><span class="line">            &lt;key column=&quot;user_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">            &lt;many-to-many class=&quot;Role&quot; column=&quot;role_id&quot;&gt;&lt;/many-to-many&gt;</span><br><span class="line">        &lt;/set&gt;</span><br><span class="line">    &lt;/class&gt;</span><br><span class="line">&lt;/hibernate-mapping&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="三、角色实体"><a href="#三、角色实体" class="headerlink" title="三、角色实体"></a>三、角色实体</h2><h3 id="3-1-Role-java"><a href="#3-1-Role-java" class="headerlink" title="3.1 Role.java"></a>3.1 Role.java</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class Role &#123;</span><br><span class="line">    private Long role_id;</span><br><span class="line">    private String role_name;</span><br><span class="line">    private String role_memo;</span><br><span class="line">    </span><br><span class="line">    //表达多对对关系</span><br><span class="line">    private Set&lt;User&gt; users = new HashSet&lt;&gt;();    </span><br><span class="line">    </span><br><span class="line">    ....省略了get/set方法...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-Role-hbm-xml"><a href="#3-2-Role-hbm-xml" class="headerlink" title="3.2 Role.hbm.xml"></a>3.2 Role.hbm.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;&gt;</span><br><span class="line">&lt;hibernate-mapping package=&quot;com.qwm.hibernate03.domain&quot; &gt;</span><br><span class="line">    &lt;class name=&quot;Role&quot; table=&quot;sys_role&quot; &gt;</span><br><span class="line">        &lt;id name=&quot;role_id&quot;  &gt;</span><br><span class="line">            &lt;generator class=&quot;native&quot;&gt;&lt;/generator&gt;</span><br><span class="line">        &lt;/id&gt;</span><br><span class="line">        &lt;property name=&quot;role_name&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;role_memo&quot;  &gt;&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 多对多关系表达 --&gt;</span><br><span class="line">        &lt;!--</span><br><span class="line">            name: 集合属性名</span><br><span class="line">            table: 配置中间表名</span><br><span class="line">            key</span><br><span class="line">             |-column:外键,别人引用&quot;我&quot;的外键列名</span><br><span class="line">             class: 我与哪个类是多对多关系</span><br><span class="line">             column:外键.我引用比人的外键列名</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;set name=&quot;users&quot; table=&quot;sys_user_role&quot; inverse=&quot;true&quot;&gt;</span><br><span class="line">            &lt;key column=&quot;role_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">            &lt;many-to-many class=&quot;User&quot; column=&quot;user_id&quot;&gt;&lt;/many-to-many&gt;</span><br><span class="line">        &lt;/set&gt;</span><br><span class="line">    &lt;/class&gt;</span><br><span class="line">&lt;/hibernate-mapping&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="四、保存用户以及角色"><a href="#四、保存用户以及角色" class="headerlink" title="四、保存用户以及角色"></a>四、保存用户以及角色</h2><h3 id="4-1-产生的问题以及解决"><a href="#4-1-产生的问题以及解决" class="headerlink" title="4.1 产生的问题以及解决"></a>4.1 产生的问题以及解决</h3><p><strong>注意：</strong> 这里我们保存用户与角色的数据的时候，需要注意，二者默认都是维护着关系的，就会导致二者都会相互之间添加到维护他们两者之间关系的表中，这样就会产生主键冲突，导致无法数据添加失败。</p>
+<p><strong>解决方式有两种：</strong></p>
+<p><strong>第一种</strong> 我们在添加数据关系的时候，只添加一方的关系，不添添加另一方的关系</p>
+<p>如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    //3.3表达关系</span><br><span class="line">    user1.getRoles().add(role1);</span><br><span class="line">    user1.getRoles().add(role2);</span><br><span class="line">    user2.getRoles().add(role1);</span><br><span class="line">    user2.getRoles().add(role2);</span><br><span class="line"></span><br><span class="line">//  role1.getUsers().add(user1);</span><br><span class="line">//  role1.getUsers().add(user2);</span><br><span class="line">//  role2.getUsers().add(user1);</span><br><span class="line">//  role2.getUsers().add(user2);</span><br></pre></td></tr></table></figure></p>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">        //3.3表达关系</span><br><span class="line">//  user1.getRoles().add(role1);</span><br><span class="line">//  user1.getRoles().add(role2);</span><br><span class="line">//  user2.getRoles().add(role1);</span><br><span class="line">//  user2.getRoles().add(role2);</span><br><span class="line"></span><br><span class="line">    role1.getUsers().add(user1);</span><br><span class="line">    role1.getUsers().add(user2);</span><br><span class="line">    role2.getUsers().add(user1);</span><br><span class="line">    role2.getUsers().add(user2);</span><br></pre></td></tr></table></figure>
+<p><strong>第二种</strong> 这种方式就是配置一方放弃维护关系，可以配置到 User 中，也可以配置到 Role中，</p>
+<p>如</p>
+<p>如果是 <strong>Role.hbm.xml</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line">&lt;set name=&quot;users&quot; table=&quot;sys_user_role&quot; inverse=&quot;true&quot;&gt;</span><br><span class="line">    &lt;key column=&quot;role_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">    &lt;many-to-many class=&quot;User&quot; column=&quot;user_id&quot;&gt;&lt;/many-to-many&gt;</span><br><span class="line">&lt;/set&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>或者</p>
+<p>如果是 <strong>User.hbm.xml</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">&lt;set name=&quot;roles&quot; table=&quot;sys_user_role&quot; inverse=&quot;true&quot;&gt;</span><br><span class="line">    &lt;!----&gt;</span><br><span class="line">    &lt;key column=&quot;user_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">    &lt;many-to-many class=&quot;Role&quot; column=&quot;role_id&quot;&gt;&lt;/many-to-many&gt;</span><br><span class="line">&lt;/set&gt;</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>下面的例子中，我们采用的是配置文件中 Role放弃维护关系，就是上面我们的完整配置</strong></p>
+<h3 id="4-2-代码实例"><a href="#4-2-代码实例" class="headerlink" title="4.2 代码实例"></a>4.2 代码实例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 保存用户以及角色</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test1()&#123;</span><br><span class="line">    //1.创建session</span><br><span class="line">    Session session = HibernateUtils.openSession();</span><br><span class="line">    //2.开启事务</span><br><span class="line">    Transaction t = session.beginTransaction();</span><br><span class="line">    //===================================</span><br><span class="line">    //3.操作</span><br><span class="line">    //3.1创建两个用户</span><br><span class="line">    User user1 = new User();</span><br><span class="line">    user1.setUser_name(&quot;高晓明&quot;);</span><br><span class="line">    User user2 = new User();</span><br><span class="line">    user2.setUser_name(&quot;李志锋&quot;)</span><br><span class="line">    ;</span><br><span class="line">    //3.2创建两角色</span><br><span class="line">    Role role1 = new Role();</span><br><span class="line">    role1.setRole_name(&quot;保安&quot;);</span><br><span class="line">    Role role2 = new Role();</span><br><span class="line">    role2.setRole_name(&quot;清洁工&quot;);</span><br><span class="line"></span><br><span class="line">    //3.3表达关系</span><br><span class="line">    user1.getRoles().add(role1);</span><br><span class="line">    user1.getRoles().add(role2);</span><br><span class="line">    user2.getRoles().add(role1);</span><br><span class="line">    user2.getRoles().add(role2);</span><br><span class="line"></span><br><span class="line">    role1.getUsers().add(user1);</span><br><span class="line">    role1.getUsers().add(user2);</span><br><span class="line">    role2.getUsers().add(user1);</span><br><span class="line">    role2.getUsers().add(user2);</span><br><span class="line"></span><br><span class="line">    //3.4数据持久化</span><br><span class="line">    session.save(user1);</span><br><span class="line">    session.save(user2);</span><br><span class="line">    session.save(role1);</span><br><span class="line">    session.save(role2);</span><br><span class="line"></span><br><span class="line">    //===================================</span><br><span class="line"></span><br><span class="line">    //4.提交事务</span><br><span class="line">    t.commit();</span><br><span class="line">    //5.关闭资源</span><br><span class="line">    session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-结果"><a href="#4-3-结果" class="headerlink" title="4.3 结果"></a>4.3 结果</h3><p><strong>用户表</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170919234526579?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" title="">
+                </div>
+                <div class="image-caption">这里写图片描述</div>
+            </figure>
+<p><strong>角色表</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170919234536794?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" title="">
+                </div>
+                <div class="image-caption">这里写图片描述</div>
+            </figure>
+<p><strong>用户-角色表</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170919234548563?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" title="">
+                </div>
+                <div class="image-caption">这里写图片描述</div>
+            </figure>
+<hr>
+<h2 id="五、为用户添加角色"><a href="#五、为用户添加角色" class="headerlink" title="五、为用户添加角色"></a>五、为用户添加角色</h2><h3 id="5-1-问题说明"><a href="#5-1-问题说明" class="headerlink" title="5.1 问题说明"></a>5.1 问题说明</h3><p>我们为用户保存角色的时候，有两种方式处理</p>
+<p><strong>第一种：我们自己保存角色</strong></p>
+<p>例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user.getRoles().add(role);</span><br><span class="line">session.save(role);</span><br></pre></td></tr></table></figure>
+<p><strong>第二种：再我们的user.hbm.xml中配置级联保存</strong></p>
+<p>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;set name=&quot;roles&quot; table=&quot;sys_user_role&quot; cascade=&quot;save-update&quot;&gt;</span><br><span class="line">	&lt;!----&gt;</span><br><span class="line">	&lt;key column=&quot;user_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">	&lt;many-to-many class=&quot;Role&quot; column=&quot;role_id&quot;&gt;&lt;/many-to-many&gt;</span><br><span class="line">&lt;/set&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这里我们使用的是第一种方式</p>
+<h3 id="5-2-示例代码"><a href="#5-2-示例代码" class="headerlink" title="5.2 示例代码"></a>5.2 示例代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 为用户添加角色</span><br><span class="line"> * 我们来实现为 “高晓峰”添加一个“部门经理”的角色</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test2()&#123;</span><br><span class="line">	//1.创建session</span><br><span class="line">	Session session = HibernateUtils.openSession();</span><br><span class="line">	//2.开启事务</span><br><span class="line">	Transaction t = session.beginTransaction();</span><br><span class="line">	//===================================</span><br><span class="line">	//3.操作</span><br><span class="line">	//3.1 得到高晓峰这个用户</span><br><span class="line">	User user = session.get(User.class,1L);</span><br><span class="line">	//3.2 创建“部门经理”这个角色</span><br><span class="line">	Role role = new Role();</span><br><span class="line">	role.setRole_name(&quot;部门经理&quot;);</span><br><span class="line">	//3.3 给高晓峰添加“部门经理”这个角色</span><br><span class="line">	//这里不用调用保存的方法，保存user,因为user是持久化对象</span><br><span class="line">	user.getRoles().add(role);</span><br><span class="line">//        session.save(role);</span><br><span class="line"></span><br><span class="line">	//===================================</span><br><span class="line"></span><br><span class="line">	//4.提交事务</span><br><span class="line">	t.commit();</span><br><span class="line">	//5.关闭资源</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-3-结果"><a href="#5-3-结果" class="headerlink" title="5.3 结果"></a>5.3 结果</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170919234622747?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" title="">
+                </div>
+                <div class="image-caption">这里写图片描述</div>
+            </figure>
+<hr>
+<h2 id="六、为用户删除角色"><a href="#六、为用户删除角色" class="headerlink" title="六、为用户删除角色"></a>六、为用户删除角色</h2><h3 id="6-1-示例代码"><a href="#6-1-示例代码" class="headerlink" title="6.1 示例代码"></a>6.1 示例代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 为用户删除角色</span><br><span class="line"> * 我们来实现为 “高晓峰”删除“清洁工”和“保安”的角色</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test3()&#123;</span><br><span class="line">	//1.创建session</span><br><span class="line">	Session session = HibernateUtils.openSession();</span><br><span class="line">	//2.开启事务</span><br><span class="line">	Transaction t = session.beginTransaction();</span><br><span class="line">	//===================================</span><br><span class="line">	//3.操作</span><br><span class="line">	//3.1获取到用户</span><br><span class="line">	//3.2获取到“清洁工”这个角色</span><br><span class="line">	//3.3获取到“保安”这个角色</span><br><span class="line">	//3.4从用户的角色集合中删除“保安”和“清洁工”</span><br><span class="line">	User user = session.get(User.class,1L);</span><br><span class="line">	Role role1 = session.get(Role.class,1L);</span><br><span class="line">	Role role2 = session.get(Role.class,2L);</span><br><span class="line">	//user是持久化对象那个，所以不用调用保存的方法</span><br><span class="line">	user.getRoles().remove(role1);</span><br><span class="line">	user.getRoles().remove(role2);</span><br><span class="line">	//===================================</span><br><span class="line"></span><br><span class="line">	//4.提交事务</span><br><span class="line">	t.commit();</span><br><span class="line">	//5.关闭资源</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-2-结果"><a href="#6-2-结果" class="headerlink" title="6.2 结果"></a>6.2 结果</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170919234717540?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcWl3ZW5taW5nc2hpd28=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" title="">
+                </div>
+                <div class="image-caption">这里写图片描述</div>
+            </figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-01-18T13:51:53.584Z" itemprop="dateUpdated">2018-01-18 21:51:53</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/hibernate/20/2017/11/19/" target="_blank" rel="external">http://qiwenming.github.io/hibernate/20/2017/11/19/</a>
+        
+    </div>
+    <footer>
+        <a href="http://qiwenming.github.io">
+            <img src="/img/avatar.jpg" alt="qiwenming">
+            qiwenming
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssm/">ssm</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/20/2017/11/19/&title=《SSH与SSM学习之hibernate20——多对多操作》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/20/2017/11/19/&title=《SSH与SSM学习之hibernate20——多对多操作》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/20/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate20——多对多操作》 — qiwenming&url=http://qiwenming.github.io/hibernate/20/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/20/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/hibernate/21/2017/11/19/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">SSH与SSM学习之hibernate21——离线查询</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/hibernate/19/2017/11/19/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">SSH与SSM学习之hibernate19——多对一一对多关系维护</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>qiwenming &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/20/2017/11/19/&title=《SSH与SSM学习之hibernate20——多对多操作》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/20/2017/11/19/&title=《SSH与SSM学习之hibernate20——多对多操作》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/20/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate20——多对多操作》 — qiwenming&url=http://qiwenming.github.io/hibernate/20/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/20/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3awY7CMAxFUf7/pztbRjMN99mAFOdmhaC0OV1YduzHA6/raT1/c3fN3yvX16+vfNuSIUPGtoxrudZb5L9y6vr7W6oMGTIOYNxFMPKZ89IXQfYmQ4YMGeQasjoBWoYMGTJqARela+1gKkOGDBlpEUuO3jp3+1ItLkOGjA0Z/NT9+58/0t+QIUPGVowrXOnd0sbkVVoyZMiYzeABrkOqJZfp/WXIkDGVkR6Q8UM6nt6tAaR5IEOGjBMY5M/rbfEjfpI48kbCPxmuDBkyxjHSEjQFoweDIpa/OBkyZMxjxFYQItOmJm9ntqZFZMiQsS2jNirxibRvvVFUGMuQIWMoo9Zu7Bzr14bDXtxNhgwZoxmdUQkeOtOX0mkYyJAh4xxG7Tis007gxWqcJsqQIWNzRhrsyMP6GP4UGTJknMDoBDtecPIkr5YgypAhYzYjHbDgBW2tMZm+0OKciAwZMjZkpAVtetDG2Sn4V8CVIUPGUEY/OUNtxbAw5uMXj3flmDJkyNiEQZJC8rBa2yD9/CJBlCFDxmEMTiLXp0f/5PXJkCHjNMa70juO4dt98S8ZMmQMZfSPvdKxCR6gg/RUhgwZoxl81UJkbVysWMTKkCFjNKNWuPKjtH5UlCFDhoxO4OMNAP59ejgoQ4YMGTy7rLUQOoMdrSkPGTJkHMYgw6ydjaIGpwwZMg5g8KGudNO8PE5HaWXIkHEOo5N31cpdgum0FmTIkDGI8QPIsbJQblRFjwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

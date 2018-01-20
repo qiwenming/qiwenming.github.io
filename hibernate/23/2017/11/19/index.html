@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略 | qiwenming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ssm,hibernate">
+    <meta name="description" content="SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略一、说明关联级别加载策略，其实就是在关联查询中，使用lazy和fetch的策略。 比如说我们查询一个公司，然后通过公司查询到员工这就是关联，反之亦然。 这个和我们前面的 类级别加载策略 使用上的区别是： 我们的类级别加载策略使用在  中 然后我们的关联级别是用在设置关联的地方，比如一对多我们用在中。  二、lazy和f">
+<meta name="keywords" content="ssm,hibernate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略">
+<meta property="og:url" content="http://qiwenming.github.io/hibernate/23/2017/11/19/index.html">
+<meta property="og:site_name" content="qiwenming">
+<meta property="og:description" content="SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略一、说明关联级别加载策略，其实就是在关联查询中，使用lazy和fetch的策略。 比如说我们查询一个公司，然后通过公司查询到员工这就是关联，反之亦然。 这个和我们前面的 类级别加载策略 使用上的区别是： 我们的类级别加载策略使用在  中 然后我们的关联级别是用在设置关联的地方，比如一对多我们用在中。  二、lazy和f">
+<meta property="og:updated_time" content="2018-01-18T13:51:53.588Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略">
+<meta name="twitter:description" content="SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略一、说明关联级别加载策略，其实就是在关联查询中，使用lazy和fetch的策略。 比如说我们查询一个公司，然后通过公司查询到员工这就是关联，反之亦然。 这个和我们前面的 类级别加载策略 使用上的区别是： 我们的类级别加载策略使用在  中 然后我们的关联级别是用在设置关联的地方，比如一对多我们用在中。  二、lazy和f">
+    
+        <link rel="alternate" type="application/atom+xml" title="qiwenming" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">qiwenming</h5>
+          <a href="mailto:qiwenmingshiwo@163.com" title="qiwenmingshiwo@163.com" class="mail">qiwenmingshiwo@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/qiwenming" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://blog.csdn.net/qiwenmingshiwo" target="_blank" >
+                <i class="icon icon-lg icon-csdn"></i>
+                Csdn
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-19T13:52:14.000Z" itemprop="datePublished" class="page-time">
+  2017-11-19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略"><span class="post-toc-text">SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、说明"><span class="post-toc-text">一、说明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、lazy和fetch的取值"><span class="post-toc-text">二、lazy和fetch的取值</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、配置文件-Company-hbm-xml"><span class="post-toc-text">三、配置文件 Company.hbm.xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、fetch为select-lazy为-true-false-extra-测试"><span class="post-toc-text">四、fetch为select , lazy为 true | false | extra 测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-1-测试代码"><span class="post-toc-text">4.1 测试代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-2-fetch为select-lazy为-true-打印结果"><span class="post-toc-text">4.2 fetch为select , lazy为 true 打印结果</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-3-fetch为select-lazy为-false-打印结果"><span class="post-toc-text">4.3 fetch为select , lazy为 false 打印结果</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-4-fetch为select-lazy为-extra-打印结果"><span class="post-toc-text">4.4 fetch为select , lazy为 extra 打印结果</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、fetch为join-lazy为-true-false-extra-测试"><span class="post-toc-text">五、fetch为join , lazy为 true | false | extra 测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-1-测试代码"><span class="post-toc-text">5.1 测试代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-2-fetch为join-true-false-extra-打印结果"><span class="post-toc-text">5.2 fetch为join , true | false | extra 打印结果</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#六、fetch为join-lazy为-true-false-extra-测试"><span class="post-toc-text">六、fetch为join , lazy为 true | false | extra 测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-1-测试代码"><span class="post-toc-text">6.1 测试代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-2-fetch为subselect-lazy为true-打印结果"><span class="post-toc-text">6.2 fetch为subselect , lazy为true  打印结果</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-3-fetch为subselect-lazy为false-打印结果"><span class="post-toc-text">6.3 fetch为subselect , lazy为false  打印结果</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-4-fetch为subselect-lazy为extra-打印结果"><span class="post-toc-text">6.4 fetch为subselect , lazy为extra  打印结果</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-hibernate/23"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-19 21:52:14" datetime="2017-11-19T13:52:14.000Z"  itemprop="datePublished">2017-11-19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略"><a href="#SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略" class="headerlink" title="SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略"></a>SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略</h1><h2 id="一、说明"><a href="#一、说明" class="headerlink" title="一、说明"></a>一、说明</h2><p>关联级别加载策略，其实就是在关联查询中，使用<strong>lazy</strong>和<strong>fetch</strong>的策略。</p>
+<p>比如说我们查询一个公司，然后通过公司查询到员工这就是关联，反之亦然。</p>
+<p>这个和我们前面的 <strong>类级别加载策略</strong> 使用上的区别是：</p>
+<p>我们的类级别加载策略使用在 <class> 中</class></p>
+<p>然后我们的关联级别是用在设置关联的地方，比如一对多我们用在<set>中。</set></p>
+<hr>
+<h2 id="二、lazy和fetch的取值"><a href="#二、lazy和fetch的取值" class="headerlink" title="二、lazy和fetch的取值"></a>二、lazy和fetch的取值</h2><p><strong>lazy</strong>叫做懒加载或者延迟加载，取值如下</p>
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>true(默认值):</td>
+<td>延迟加载,懒加载</td>
+</tr>
+<tr>
+<td>false:</td>
+<td>立即加载</td>
+</tr>
+<tr>
+<td>extra:</td>
+<td>极其懒惰</td>
+</tr>
+</tbody>
+</table>
+<p>fetch（抓取策略），决定加载策略.使用什么类型的sql语句加载集合数据。取值如下</p>
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>select</td>
+<td>(默认值): 单表查询加载</td>
+</tr>
+<tr>
+<td>join:</td>
+<td>使用多表查询加载集合</td>
+</tr>
+<tr>
+<td>subselect:</td>
+<td>使用子查询加载集合</td>
+</tr>
+</tbody>
+</table>
+<p>下面我们分为二者的属性值两两配对（笛卡尔积）测试</p>
+<p>第一行代表，lazy的取值</p>
+<p>第一列代表，fetch的取值</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>true</th>
+<th>false</th>
+<th>extra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>select</strong></td>
+<td>select,true</td>
+<td>select,false</td>
+<td>select,extra</td>
+</tr>
+<tr>
+<td><strong>join</strong></td>
+<td>join,ture</td>
+<td>join,false</td>
+<td>join,extra</td>
+</tr>
+<tr>
+<td><strong>subselect</strong></td>
+<td>subselect,true</td>
+<td>subselect,true</td>
+<td>subselect,extra</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="三、配置文件-Company-hbm-xml"><a href="#三、配置文件-Company-hbm-xml" class="headerlink" title="三、配置文件 Company.hbm.xml"></a>三、配置文件 Company.hbm.xml</h2><p>测试的时候，修改的就是 <set>中的 lazy和fetch</set></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;&gt;</span><br><span class="line">&lt;hibernate-mapping package=&quot;com.qwm.hibernate03.domain&quot; &gt;</span><br><span class="line">    &lt;class name=&quot;Company&quot; table=&quot;tb_company&quot;&gt;</span><br><span class="line">        &lt;id name=&quot;id&quot;&gt;</span><br><span class="line">            &lt;generator class=&quot;native&quot;&gt;&lt;/generator&gt;</span><br><span class="line">        &lt;/id&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; &gt;&lt;/property&gt;</span><br><span class="line">        &lt;!--</span><br><span class="line">            lazy属性: 决定是否延迟加载</span><br><span class="line">                true(默认值): 延迟加载,懒加载</span><br><span class="line">                false: 立即加载</span><br><span class="line">                extra: 极其懒惰</span><br><span class="line">            fetch属性: 决定加载策略.使用什么类型的sql语句加载集合数据</span><br><span class="line">                select(默认值): 单表查询加载</span><br><span class="line">                join: 使用多表查询加载集合</span><br><span class="line">                subselect:使用子查询加载集合</span><br><span class="line">         --&gt;</span><br><span class="line">		 &lt;!--测试的时候，修改的就是下面 lazy和fetch的值--&gt;</span><br><span class="line">        &lt;set name=&quot;emps&quot; lazy=&quot;true&quot; fetch=&quot;select&quot;&gt;</span><br><span class="line">            &lt;key column=&quot;com_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">            &lt;one-to-many class=&quot;Employee&quot;&gt;&lt;/one-to-many&gt;</span><br><span class="line">        &lt;/set&gt;</span><br><span class="line">    &lt;/class&gt;</span><br><span class="line">&lt;/hibernate-mapping&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="四、fetch为select-lazy为-true-false-extra-测试"><a href="#四、fetch为select-lazy为-true-false-extra-测试" class="headerlink" title="四、fetch为select , lazy为 true | false | extra 测试"></a>四、fetch为select , lazy为 true | false | extra 测试</h2><h3 id="4-1-测试代码"><a href="#4-1-测试代码" class="headerlink" title="4.1 测试代码"></a>4.1 测试代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 关联级测试，集合关联</span><br><span class="line"> * fetch:select</span><br><span class="line"> * lazy:true 使用时才加载集合数据</span><br><span class="line"> * lazy:false 立即记载集合数据</span><br><span class="line"> * lazy:extra 极其懒惰.与懒加载效果基本一致. 如果只获得集合的size.只查询集合的size(count语句)</span><br><span class="line"> * 这里测试的是，通过公司查询公司的员工</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test3()&#123;</span><br><span class="line">    Session session = HibernateUtils.openSession();</span><br><span class="line">    Transaction t = session.beginTransaction();</span><br><span class="line">    //------------------------------</span><br><span class="line">    //获取到公司</span><br><span class="line">    Company c = session.get(Company.class,1L);</span><br><span class="line">    System.out.println(&quot;------------第一个分割线-------------&quot;);</span><br><span class="line">    //获取这个公司的员工（关联）</span><br><span class="line">    Set&lt;Employee&gt; emps = c.getEmps();</span><br><span class="line">    System.out.println(&quot;------------第二个分割线-------------&quot;);</span><br><span class="line">    System.out.println(emps.size());</span><br><span class="line">    System.out.println(&quot;------------第三个分割线-------------&quot;);</span><br><span class="line">    System.out.println(emps);</span><br><span class="line"></span><br><span class="line">    //------------------------------</span><br><span class="line">    t.commit();</span><br><span class="line">    session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-2-fetch为select-lazy为-true-打印结果"><a href="#4-2-fetch为select-lazy为-true-打印结果" class="headerlink" title="4.2 fetch为select , lazy为 true 打印结果"></a>4.2 fetch为select , lazy为 true 打印结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        company0_.id as id1_0_0_,</span><br><span class="line">        company0_.name as name2_0_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_company company0_ </span><br><span class="line">    where</span><br><span class="line">        company0_.id=?</span><br><span class="line">------------第一个分割线-------------</span><br><span class="line">------------第二个分割线-------------</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        emps0_.com_id as com_id3_1_0_,</span><br><span class="line">        emps0_.em_id as em_id1_1_0_,</span><br><span class="line">        emps0_.em_id as em_id1_1_1_,</span><br><span class="line">        emps0_.name as name2_1_1_,</span><br><span class="line">        emps0_.com_id as com_id3_1_1_ </span><br><span class="line">    from</span><br><span class="line">        tb_employee emps0_ </span><br><span class="line">    where</span><br><span class="line">        emps0_.com_id=?</span><br><span class="line">2</span><br><span class="line">------------第三个分割线-------------</span><br><span class="line">[Employee&#123;em_id=2, name=&apos;周小龙&apos;&#125;, Employee&#123;em_id=1, name=&apos;李晓飞&apos;&#125;]</span><br></pre></td></tr></table></figure>
+<p>我们可以看到 fetch为select , lazy为 true 的时候，我们查询公司的时候，只查询了公司的信息，没有查询员工的信息，只有使用员工的集合的时候，采取查询。使用了懒加载。</p>
+<hr>
+<h3 id="4-3-fetch为select-lazy为-false-打印结果"><a href="#4-3-fetch为select-lazy为-false-打印结果" class="headerlink" title="4.3 fetch为select , lazy为 false 打印结果"></a>4.3 fetch为select , lazy为 false 打印结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        company0_.id as id1_0_0_,</span><br><span class="line">        company0_.name as name2_0_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_company company0_ </span><br><span class="line">    where</span><br><span class="line">        company0_.id=?</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        emps0_.com_id as com_id3_1_0_,</span><br><span class="line">        emps0_.em_id as em_id1_1_0_,</span><br><span class="line">        emps0_.em_id as em_id1_1_1_,</span><br><span class="line">        emps0_.name as name2_1_1_,</span><br><span class="line">        emps0_.com_id as com_id3_1_1_ </span><br><span class="line">    from</span><br><span class="line">        tb_employee emps0_ </span><br><span class="line">    where</span><br><span class="line">        emps0_.com_id=?</span><br><span class="line">------------第一个分割线-------------</span><br><span class="line">------------第二个分割线-------------</span><br><span class="line">2</span><br><span class="line">------------第三个分割线-------------</span><br><span class="line">[Employee&#123;em_id=2, name=&apos;周小龙&apos;&#125;, Employee&#123;em_id=1, name=&apos;李晓飞&apos;&#125;]</span><br></pre></td></tr></table></figure>
+<p>fetch为select , lazy为 false ，不使用懒加载，会直接加载数据。</p>
+<hr>
+<h3 id="4-4-fetch为select-lazy为-extra-打印结果"><a href="#4-4-fetch为select-lazy为-extra-打印结果" class="headerlink" title="4.4 fetch为select , lazy为 extra 打印结果"></a>4.4 fetch为select , lazy为 extra 打印结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        company0_.id as id1_0_0_,</span><br><span class="line">        company0_.name as name2_0_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_company company0_ </span><br><span class="line">    where</span><br><span class="line">        company0_.id=?</span><br><span class="line">------------第一个分割线-------------</span><br><span class="line">------------第二个分割线-------------</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        count(em_id) </span><br><span class="line">    from</span><br><span class="line">        tb_employee </span><br><span class="line">    where</span><br><span class="line">        com_id =?</span><br><span class="line">2</span><br><span class="line">------------第三个分割线-------------</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        emps0_.com_id as com_id3_1_0_,</span><br><span class="line">        emps0_.em_id as em_id1_1_0_,</span><br><span class="line">        emps0_.em_id as em_id1_1_1_,</span><br><span class="line">        emps0_.name as name2_1_1_,</span><br><span class="line">        emps0_.com_id as com_id3_1_1_ </span><br><span class="line">    from</span><br><span class="line">        tb_employee emps0_ </span><br><span class="line">    where</span><br><span class="line">        emps0_.com_id=?</span><br><span class="line">[Employee&#123;em_id=2, name=&apos;周小龙&apos;&#125;, Employee&#123;em_id=1, name=&apos;李晓飞&apos;&#125;]</span><br></pre></td></tr></table></figure>
+<p>fetch为select , lazy为 extra，极其懒惰.与懒加载效果基本一致. 如果只获得集合的size.只查询集合的size(count语句)</p>
+<hr>
+<h2 id="五、fetch为join-lazy为-true-false-extra-测试"><a href="#五、fetch为join-lazy为-true-false-extra-测试" class="headerlink" title="五、fetch为join , lazy为 true | false | extra 测试"></a>五、fetch为join , lazy为 true | false | extra 测试</h2><h3 id="5-1-测试代码"><a href="#5-1-测试代码" class="headerlink" title="5.1 测试代码"></a>5.1 测试代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 关联级测试，集合关联</span><br><span class="line"> * fetch:join</span><br><span class="line"> * lazy:true|false|extra 失效，都是立即查询</span><br><span class="line"> * 这里测试的是，通过公司查询公司的员工</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test4()&#123;</span><br><span class="line">	Session session = HibernateUtils.openSession();</span><br><span class="line">	Transaction t = session.beginTransaction();</span><br><span class="line">	//------------------------------</span><br><span class="line">	//获取到公司</span><br><span class="line">	Company c = session.get(Company.class,1L);</span><br><span class="line">	System.out.println(&quot;------------第一个分割线-------------&quot;);</span><br><span class="line">	//获取这个公司的员工（关联）</span><br><span class="line">	Set&lt;Employee&gt; emps = c.getEmps();</span><br><span class="line">	System.out.println(&quot;------------第二个分割线-------------&quot;);</span><br><span class="line">	System.out.println(emps.size());</span><br><span class="line">	System.out.println(&quot;------------第三个分割线-------------&quot;);</span><br><span class="line">	System.out.println(emps);</span><br><span class="line"></span><br><span class="line">	//------------------------------</span><br><span class="line">	t.commit();</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-fetch为join-true-false-extra-打印结果"><a href="#5-2-fetch为join-true-false-extra-打印结果" class="headerlink" title="5.2 fetch为join , true | false | extra 打印结果"></a>5.2 fetch为join , true | false | extra 打印结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        company0_.id as id1_0_0_,</span><br><span class="line">        company0_.name as name2_0_0_,</span><br><span class="line">        emps1_.com_id as com_id3_1_1_,</span><br><span class="line">        emps1_.em_id as em_id1_1_1_,</span><br><span class="line">        emps1_.em_id as em_id1_1_2_,</span><br><span class="line">        emps1_.name as name2_1_2_,</span><br><span class="line">        emps1_.com_id as com_id3_1_2_ </span><br><span class="line">    from</span><br><span class="line">        tb_company company0_ </span><br><span class="line">    left outer join</span><br><span class="line">        tb_employee emps1_ </span><br><span class="line">            on company0_.id=emps1_.com_id </span><br><span class="line">    where</span><br><span class="line">        company0_.id=?</span><br><span class="line">------------第一个分割线-------------</span><br><span class="line">------------第二个分割线-------------</span><br><span class="line">2</span><br><span class="line">------------第三个分割线-------------</span><br><span class="line">[Employee&#123;em_id=1, name=&apos;李晓飞&apos;&#125;, Employee&#123;em_id=2, name=&apos;周小龙&apos;&#125;]</span><br></pre></td></tr></table></figure>
+<p>fetch使用<strong>join</strong>的情况下，lazy失效，都是直接加载数据。</p>
+<hr>
+<hr>
+<h2 id="六、fetch为join-lazy为-true-false-extra-测试"><a href="#六、fetch为join-lazy为-true-false-extra-测试" class="headerlink" title="六、fetch为join , lazy为 true | false | extra 测试"></a>六、fetch为join , lazy为 true | false | extra 测试</h2><h3 id="6-1-测试代码"><a href="#6-1-测试代码" class="headerlink" title="6.1 测试代码"></a>6.1 测试代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="6-2-fetch为subselect-lazy为true-打印结果"><a href="#6-2-fetch为subselect-lazy为true-打印结果" class="headerlink" title="6.2 fetch为subselect , lazy为true  打印结果"></a>6.2 fetch为subselect , lazy为true  打印结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        company0_.id as id1_0_,</span><br><span class="line">        company0_.name as name2_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_company company0_</span><br><span class="line">------------第一个分割线-------------</span><br><span class="line">------------第二个分割线-------------</span><br><span class="line">Company&#123;id=1, name=&apos;百鸟公司&apos;&#125;</span><br><span class="line">------------第三个分割线-------------</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        emps0_.com_id as com_id3_1_1_,</span><br><span class="line">        emps0_.em_id as em_id1_1_1_,</span><br><span class="line">        emps0_.em_id as em_id1_1_0_,</span><br><span class="line">        emps0_.name as name2_1_0_,</span><br><span class="line">        emps0_.com_id as com_id3_1_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_employee emps0_ </span><br><span class="line">    where</span><br><span class="line">        emps0_.com_id in (</span><br><span class="line">            select</span><br><span class="line">                company0_.id </span><br><span class="line">            from</span><br><span class="line">                tb_company company0_</span><br><span class="line">        )</span><br><span class="line">2</span><br><span class="line">------------第四个分割线-------------</span><br><span class="line">[Employee&#123;em_id=1, name=&apos;李晓飞&apos;&#125;, Employee&#123;em_id=2, name=&apos;周小龙&apos;&#125;]</span><br></pre></td></tr></table></figure>
+<p>fetch为subselect , lazy为true ，首先会查询出公司的信息，不会查询员工信息。使用的员工集合的时候，会使用子查询查询出员工信息。</p>
+<hr>
+<h3 id="6-3-fetch为subselect-lazy为false-打印结果"><a href="#6-3-fetch为subselect-lazy为false-打印结果" class="headerlink" title="6.3 fetch为subselect , lazy为false  打印结果"></a>6.3 fetch为subselect , lazy为false  打印结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        company0_.id as id1_0_,</span><br><span class="line">        company0_.name as name2_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_company company0_</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        emps0_.com_id as com_id3_1_1_,</span><br><span class="line">        emps0_.em_id as em_id1_1_1_,</span><br><span class="line">        emps0_.em_id as em_id1_1_0_,</span><br><span class="line">        emps0_.name as name2_1_0_,</span><br><span class="line">        emps0_.com_id as com_id3_1_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_employee emps0_ </span><br><span class="line">    where</span><br><span class="line">        emps0_.com_id in (</span><br><span class="line">            select</span><br><span class="line">                company0_.id </span><br><span class="line">            from</span><br><span class="line">                tb_company company0_</span><br><span class="line">        )</span><br><span class="line">------------第一个分割线-------------</span><br><span class="line">------------第二个分割线-------------</span><br><span class="line">Company&#123;id=1, name=&apos;百鸟公司&apos;&#125;</span><br><span class="line">------------第三个分割线-------------</span><br><span class="line">2</span><br><span class="line">------------第四个分割线-------------</span><br><span class="line">[Employee&#123;em_id=1, name=&apos;李晓飞&apos;&#125;, Employee&#123;em_id=2, name=&apos;周小龙&apos;&#125;]</span><br></pre></td></tr></table></figure>
+<p>fetch为subselect , lazy为false 。直接加载。首先使用查询出公司信息，然后通过子查询，查询出员工信息。</p>
+<hr>
+<h3 id="6-4-fetch为subselect-lazy为extra-打印结果"><a href="#6-4-fetch为subselect-lazy为extra-打印结果" class="headerlink" title="6.4 fetch为subselect , lazy为extra  打印结果"></a>6.4 fetch为subselect , lazy为extra  打印结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        company0_.id as id1_0_,</span><br><span class="line">        company0_.name as name2_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_company company0_</span><br><span class="line">------------第一个分割线-------------</span><br><span class="line">------------第二个分割线-------------</span><br><span class="line">Company&#123;id=1, name=&apos;百鸟公司&apos;&#125;</span><br><span class="line">------------第三个分割线-------------</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        count(em_id) </span><br><span class="line">    from</span><br><span class="line">        tb_employee </span><br><span class="line">    where</span><br><span class="line">        com_id =?</span><br><span class="line">2</span><br><span class="line">------------第四个分割线-------------</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        emps0_.com_id as com_id3_1_1_,</span><br><span class="line">        emps0_.em_id as em_id1_1_1_,</span><br><span class="line">        emps0_.em_id as em_id1_1_0_,</span><br><span class="line">        emps0_.name as name2_1_0_,</span><br><span class="line">        emps0_.com_id as com_id3_1_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_employee emps0_ </span><br><span class="line">    where</span><br><span class="line">        emps0_.com_id in (</span><br><span class="line">            select</span><br><span class="line">                company0_.id </span><br><span class="line">            from</span><br><span class="line">                tb_company company0_</span><br><span class="line">        )</span><br><span class="line">[Employee&#123;em_id=1, name=&apos;李晓飞&apos;&#125;, Employee&#123;em_id=2, name=&apos;周小龙&apos;&#125;]</span><br></pre></td></tr></table></figure>
+<p>fetch为subselect , lazy为extra ，首先会查询出公司的信息，不会查询员工信息。使用的员工集合的时候，如果只是使用到size(),那么会使用<strong>count()</strong> 查询出个数。使用到员工集合的时候，会使用子查询查询出员工信息。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-01-18T13:51:53.588Z" itemprop="dateUpdated">2018-01-18 21:51:53</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/hibernate/23/2017/11/19/" target="_blank" rel="external">http://qiwenming.github.io/hibernate/23/2017/11/19/</a>
+        
+    </div>
+    <footer>
+        <a href="http://qiwenming.github.io">
+            <img src="/img/avatar.jpg" alt="qiwenming">
+            qiwenming
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssm/">ssm</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/23/2017/11/19/&title=《SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/23/2017/11/19/&title=《SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/23/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略》 — qiwenming&url=http://qiwenming.github.io/hibernate/23/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/23/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/hibernate/24/2017/11/19/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">SSH与SSM学习之hibernate24——关联级别加载策略之属性关联加载策略</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/hibernate/22/2017/11/19/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">SSH与SSM学习之hibernate22——类级别加载策略</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>qiwenming &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/23/2017/11/19/&title=《SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/23/2017/11/19/&title=《SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/23/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略》 — qiwenming&url=http://qiwenming.github.io/hibernate/23/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/23/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQU7EMAwFUO5/6WHDYiRo+T8ekCZ5WaGStnkdyXJif3zE4/E0nq9czfk+837+/cyXDQwMjLdlPG7H/RLz/+bU++uXVAwMjAMYVxEsmZPz2g+RrA0DAwMjTwTni24/HwYGBsbV49aC41owxcDAwGg3scnR2+Rp/7QXx8DAeENGfur+/3//SX0DAwPjrRiTjejaof9r1/P1TAwMjK0ZeYBr07J5ctk+HwMDY1fG/Q3JsX5+V5t0JmuIfgcMDIwtGHmAu3/ZqxLHvJDwQ4aLgYGxHSNJ5vK2iQl48oEwMDBOYKxtICfNGW3BsvgdMDAwNmW0R/PJ/DbtS8JuUdrEwMDYiNGWG/M2r7WmjbXyAwYGxt6MdoltUTNZUJICFiEYAwPjGMZay0X+CebFhiJNxMDA2IKRB7vkZXNM/hYMDIyTGckS8w1nnuStJYgYGBh7M9pj+rb9a9K0UXxiDAyMrRlF+0JcK5wUPtfuxcDAOIex1hiRj7WSZ72JxcDA2JrRBtZ2c5u3aCwe9mFgYBzDyBeUMOZH/0Wgx8DAOIDRtmHN57ep5y93YWBgbMqYH3vl0S9ZVnK98GFgYGzBaA/LJkdv+bImTWkYGBi7MtqNa9K8NQmO7eYZAwPjHEYb+NqU7lUl0ksYBgYGRlm8zO9q31h0ZGBgYBzP+ItNab7Cy/oGBgbG1oy8qStpEZtsj/NwjIGBcQ5jnnclIXVynNeGeAwMjI0Yn7sY2xmvMa/DAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

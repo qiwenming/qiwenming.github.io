@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>SSH与SSM学习之hibernate11——二级缓存 | qiwenming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ssm,hibernate">
+    <meta name="description" content="SSH与SSM学习之hibernate11——二级缓存一、一级缓存解决不了多个session的问题比如现在我们查询的数据，基本是不变的，在一级缓存（session缓存）下，我们如果是同一个session,那么有数据被缓存，但是如果我们是多个session的话，那么我们还是会多次去访问数据。然而由于数据是不变的，我们完全没必要呀。我们想要实现的就是多个session也能够直接使用，而不去查询，这样我">
+<meta name="keywords" content="ssm,hibernate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH与SSM学习之hibernate11——二级缓存">
+<meta property="og:url" content="http://qiwenming.github.io/hibernate/11/2017/11/19/index.html">
+<meta property="og:site_name" content="qiwenming">
+<meta property="og:description" content="SSH与SSM学习之hibernate11——二级缓存一、一级缓存解决不了多个session的问题比如现在我们查询的数据，基本是不变的，在一级缓存（session缓存）下，我们如果是同一个session,那么有数据被缓存，但是如果我们是多个session的话，那么我们还是会多次去访问数据。然而由于数据是不变的，我们完全没必要呀。我们想要实现的就是多个session也能够直接使用，而不去查询，这样我">
+<meta property="og:updated_time" content="2018-01-18T13:51:53.567Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSH与SSM学习之hibernate11——二级缓存">
+<meta name="twitter:description" content="SSH与SSM学习之hibernate11——二级缓存一、一级缓存解决不了多个session的问题比如现在我们查询的数据，基本是不变的，在一级缓存（session缓存）下，我们如果是同一个session,那么有数据被缓存，但是如果我们是多个session的话，那么我们还是会多次去访问数据。然而由于数据是不变的，我们完全没必要呀。我们想要实现的就是多个session也能够直接使用，而不去查询，这样我">
+    
+        <link rel="alternate" type="application/atom+xml" title="qiwenming" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">qiwenming</h5>
+          <a href="mailto:qiwenmingshiwo@163.com" title="qiwenmingshiwo@163.com" class="mail">qiwenmingshiwo@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/qiwenming" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://blog.csdn.net/qiwenmingshiwo" target="_blank" >
+                <i class="icon icon-lg icon-csdn"></i>
+                Csdn
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SSH与SSM学习之hibernate11——二级缓存</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SSH与SSM学习之hibernate11——二级缓存</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-19T13:52:02.000Z" itemprop="datePublished" class="page-time">
+  2017-11-19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#SSH与SSM学习之hibernate11——二级缓存"><span class="post-toc-text">SSH与SSM学习之hibernate11——二级缓存</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、一级缓存解决不了多个session的问题"><span class="post-toc-text">一、一级缓存解决不了多个session的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、二级缓存"><span class="post-toc-text">二、二级缓存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、二级缓存配置步骤"><span class="post-toc-text">三、二级缓存配置步骤</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-1-添加二级缓存对应的jar包"><span class="post-toc-text">3.1 添加二级缓存对应的jar包</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-2-在hibernate的主配置文件中添加配置"><span class="post-toc-text">3.2 在hibernate的主配置文件中添加配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-3-添加二级缓存的属性配置文件"><span class="post-toc-text">3.3 添加二级缓存的属性配置文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-4-在需要被缓存的表所对应的映射文件中添加标签"><span class="post-toc-text">3.4 在需要被缓存的表所对应的映射文件中添加标签</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、标签说明"><span class="post-toc-text">四、标签说明</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-1-usage"><span class="post-toc-text">4.1 usage</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-2-include"><span class="post-toc-text">4.2 include</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-3-region"><span class="post-toc-text">4.3 region</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、代码测试"><span class="post-toc-text">五、代码测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-1-测试代码"><span class="post-toc-text">5.1 测试代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-2-没有二级缓存的结果"><span class="post-toc-text">5.2 没有二级缓存的结果</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-3-有二级缓存的结果"><span class="post-toc-text">5.3 有二级缓存的结果</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-hibernate/11"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">SSH与SSM学习之hibernate11——二级缓存</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-19 21:52:02" datetime="2017-11-19T13:52:02.000Z"  itemprop="datePublished">2017-11-19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="SSH与SSM学习之hibernate11——二级缓存"><a href="#SSH与SSM学习之hibernate11——二级缓存" class="headerlink" title="SSH与SSM学习之hibernate11——二级缓存"></a>SSH与SSM学习之hibernate11——二级缓存</h1><h2 id="一、一级缓存解决不了多个session的问题"><a href="#一、一级缓存解决不了多个session的问题" class="headerlink" title="一、一级缓存解决不了多个session的问题"></a>一、一级缓存解决不了多个session的问题</h2><p>比如现在我们查询的数据，基本是不变的，在一级缓存（session缓存）下，我们如果是同一个session,那么有数据被缓存，但是如果我们是多个session的话，那么我们还是会多次去访问数据。然而由于数据是不变的，我们完全没必要呀。我们想要实现的就是多个session也能够直接使用，而不去查询，这样我们的二级缓存就来了。</p>
+<hr>
+<h2 id="二、二级缓存"><a href="#二、二级缓存" class="headerlink" title="二、二级缓存"></a>二、二级缓存</h2><p>二级缓存是SessionFactory级别的缓存，是属于进程范围的缓存。</p>
+<p>二级缓存又称为“全局缓存”、“应用缓存”</p>
+<p>二级缓存中的数据可适用范围是当前应用程序的所有回话</p>
+<p>二级缓存是可插拔式缓存，默认是 <strong>EHCache</strong>,还支持其他二级缓存组件</p>
+<p>例如：Hashtable、OSCache、SwarmCache、JBoss TreeCache等</p>
+<hr>
+<h2 id="三、二级缓存配置步骤"><a href="#三、二级缓存配置步骤" class="headerlink" title="三、二级缓存配置步骤"></a>三、二级缓存配置步骤</h2><h3 id="3-1-添加二级缓存对应的jar包"><a href="#3-1-添加二级缓存对应的jar包" class="headerlink" title="3.1 添加二级缓存对应的jar包"></a>3.1 添加二级缓存对应的jar包</h3><p>在我们下载的 hibernate 的文件中，有个路径是 <strong>lib\optional\ehcache</strong>，导入里面的jar包.</p>
+<p>例如我们的是 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ehcache-2.10.3.jar</span><br><span class="line"></span><br><span class="line">hibernate-ehcache-5.2.11.Final.jar</span><br><span class="line"></span><br><span class="line">slf4j-api-1.7.7.jar</span><br></pre></td></tr></table></figure>
+<p>不能缺少任何一个包哦。如果缺少了 <strong>hibernate-ehcache-5.2.11.Final.jar</strong>，会出现下面的错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused by: org.hibernate.boot.registry.selector.spi.StrategySelectionException: Unable to resolve name [org.hibernate.cache.ehcache.EhCacheRegionFactory] as strategy [org.hibernate.cache.spi.RegionFactory ..........</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-在hibernate的主配置文件中添加配置"><a href="#3-2-在hibernate的主配置文件中添加配置" class="headerlink" title="3.2 在hibernate的主配置文件中添加配置"></a>3.2 在hibernate的主配置文件中添加配置</h3><p>我们需要在hibernate.cfg.xml中添加相应的配置，我们需要添加如下配置。</p>
+<p>Hibernate 4.0及以后<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置二级缓存的外部实现类--&gt;</span><br><span class="line">&lt;property name=&quot;hibernate.cache.provider_class&quot;&gt;net.sf.ehcache.hibernate.EhCacheProvider&lt;/property&gt;</span><br><span class="line">&lt;!--开启二级缓存--&gt;</span><br><span class="line">&lt;property name=&quot;hibernate.cache.use_second_level_cache&quot;&gt;true&lt;/property&gt;</span><br><span class="line">&lt;property name=&quot;hibernate.cache.region.factory_class&quot;&gt;org.hibernate.cache.ehcache.EhCacheRegionFactory&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<p>Hibernate 3.3<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;property name=&quot;hibernate.cache.use_second_level_cache&quot;&gt;true&lt;/property&gt;  </span><br><span class="line">&lt;property name=&quot;cache.provider_class&quot;&gt;org.hibernate.cache.EhCacheProvider&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-3-添加二级缓存的属性配置文件"><a href="#3-3-添加二级缓存的属性配置文件" class="headerlink" title="3.3 添加二级缓存的属性配置文件"></a>3.3 添加二级缓存的属性配置文件</h3><p>导入的 <strong>ehcache.xml</strong> 到 <strong>src</strong>下</p>
+<h3 id="3-4-在需要被缓存的表所对应的映射文件中添加标签"><a href="#3-4-在需要被缓存的表所对应的映射文件中添加标签" class="headerlink" title="3.4 在需要被缓存的表所对应的映射文件中添加标签"></a>3.4 在需要被缓存的表所对应的映射文件中添加<cache>标签</cache></h3><p>下载我们需要在我们需要使用二级缓存的配置文件中加入 <cache> 标签。如下</cache></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;hibernate-mapping package=&quot;com.qwm.hibernate02&quot;&gt;</span><br><span class="line">    &lt;class name=&quot;User&quot; table=&quot;tb_user2&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--二级缓存配置--&gt;</span><br><span class="line">        &lt;cache usage=&quot;read-only&quot; include=&quot;all&quot; region=&quot;User&quot;&gt;&lt;/cache&gt;</span><br><span class="line"></span><br><span class="line">        &lt;id name=&quot;id&quot;&gt;</span><br><span class="line">            &lt;!--id自增--&gt;</span><br><span class="line">            &lt;generator class=&quot;increment&quot;&gt;&lt;/generator&gt;</span><br><span class="line">        &lt;/id&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;age&quot;/&gt;</span><br><span class="line">    &lt;/class&gt;</span><br><span class="line">&lt;/hibernate-mapping&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="四、标签说明"><a href="#四、标签说明" class="headerlink" title="四、标签说明"></a>四、<cache>标签说明</cache></h2><h3 id="4-1-usage"><a href="#4-1-usage" class="headerlink" title="4.1 usage"></a>4.1 usage</h3><p>usage：指定缓存策略，可选的策略是包括：transactional,read-write、nonstrict-read-write或read-only</p>
+<p>这个具体含义可以查看</p>
+<p><a href="http://blog.csdn.net/luckyzhoustar/article/details/47748179" target="_blank" rel="noopener">详解Hibernate中的二级缓存</a></p>
+<h3 id="4-2-include"><a href="#4-2-include" class="headerlink" title="4.2 include"></a>4.2 include</h3><p>include（可选,默认为 all） non-lazy 当属性级延迟抓取打开时，标记为 lazy=”true” 的实<br>体的属性可能无法被</p>
+<h3 id="4-3-region"><a href="#4-3-region" class="headerlink" title="4.3 region"></a>4.3 region</h3><p>region （可选，默认为类或者集合的名字（class or collection role name）） 指定第二<br>级缓存的区域名（name of the second level cache region）</p>
+<p>在 <strong>ehcache.xml</strong> 配置</p>
+<hr>
+<h2 id="五、代码测试"><a href="#五、代码测试" class="headerlink" title="五、代码测试"></a>五、代码测试</h2><h3 id="5-1-测试代码"><a href="#5-1-测试代码" class="headerlink" title="5.1 测试代码"></a>5.1 测试代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 二级缓存，我们使用多个session来查询数据</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void cacheTest1()&#123;</span><br><span class="line">    //1.创建session</span><br><span class="line">    Session session = HibernateUtils.openSession();</span><br><span class="line">    //2.获取到数据</span><br><span class="line">    User user1 = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">    System.out.println(user1);</span><br><span class="line"></span><br><span class="line">    //3.创建新的session</span><br><span class="line">    session = HibernateUtils.openSession();</span><br><span class="line">    //4.获取数据</span><br><span class="line">    User user2 = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">    System.out.println(user2);</span><br><span class="line"></span><br><span class="line">    //5.关闭资源</span><br><span class="line">    session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-没有二级缓存的结果"><a href="#5-2-没有二级缓存的结果" class="headerlink" title="5.2 没有二级缓存的结果"></a>5.2 没有二级缓存的结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        user0_.id as id1_0_0_,</span><br><span class="line">        user0_.name as name2_0_0_,</span><br><span class="line">        user0_.age as age3_0_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_user2 user0_ </span><br><span class="line">    where</span><br><span class="line">        user0_.id=?</span><br><span class="line">User&#123;id=1, name=&apos;小明&apos;, age=20&#125;</span><br><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        user0_.id as id1_0_0_,</span><br><span class="line">        user0_.name as name2_0_0_,</span><br><span class="line">        user0_.age as age3_0_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_user2 user0_ </span><br><span class="line">    where</span><br><span class="line">        user0_.id=?</span><br><span class="line">User&#123;id=1, name=&apos;小明&apos;, age=20&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-3-有二级缓存的结果"><a href="#5-3-有二级缓存的结果" class="headerlink" title="5.3 有二级缓存的结果"></a>5.3 有二级缓存的结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: </span><br><span class="line">    select</span><br><span class="line">        user0_.id as id1_0_0_,</span><br><span class="line">        user0_.name as name2_0_0_,</span><br><span class="line">        user0_.age as age3_0_0_ </span><br><span class="line">    from</span><br><span class="line">        tb_user2 user0_ </span><br><span class="line">    where</span><br><span class="line">        user0_.id=?</span><br><span class="line">User&#123;id=1, name=&apos;小明&apos;, age=20&#125;</span><br><span class="line">User&#123;id=1, name=&apos;小明&apos;, age=20&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-01-18T13:51:53.567Z" itemprop="dateUpdated">2018-01-18 21:51:53</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/hibernate/11/2017/11/19/" target="_blank" rel="external">http://qiwenming.github.io/hibernate/11/2017/11/19/</a>
+        
+    </div>
+    <footer>
+        <a href="http://qiwenming.github.io">
+            <img src="/img/avatar.jpg" alt="qiwenming">
+            qiwenming
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssm/">ssm</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/11/2017/11/19/&title=《SSH与SSM学习之hibernate11——二级缓存》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/11/2017/11/19/&title=《SSH与SSM学习之hibernate11——二级缓存》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/11/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate11——二级缓存》 — qiwenming&url=http://qiwenming.github.io/hibernate/11/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/11/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/hibernate/12/2017/11/19/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">SSH与SSM学习之hibernate12——hibernate中的事务</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/hibernate/10/2017/11/19/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">SSH与SSM学习之hibernate10——Hibernate的一级缓存</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>qiwenming &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/11/2017/11/19/&title=《SSH与SSM学习之hibernate11——二级缓存》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/11/2017/11/19/&title=《SSH与SSM学习之hibernate11——二级缓存》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/11/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate11——二级缓存》 — qiwenming&url=http://qiwenming.github.io/hibernate/11/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/11/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJElEQVR42u3aQW7DMAwEwPz/0+41QGB3STotLI1OgaG4mhy2ksjXKx7H23h/cjbnc+b1/OuZtw0MDIzHMo7LkfyBs299gpP3Xz8/XQkGBsYGjLPFJXOSSK3OzNeGgYGBkXxOxiSgMTAwMO5l5KE8D3oMDIzdGMkh9nr+f70NAwNjB0Z+6/73n79S38DAwHgU4yiOhDcpTB6tgYGBsTYjD7jqtizfDvYCFwMDYx9GrzCZFzUnm86kpaywFAwMjMcyJnHZKy0kG8e8kPALBgMDYwlGctTMr+wn4GT7GP3fwMDAWJTRO0BWiwd5aTNvGsPAwNiBUW13qF7G5TF9vdDoYIyBgbEoo7roasvXN0L59BCLgYGxKCMPzUnxIA/recEAAwNjbUZ10cmre+F7Q4kUAwNjOUYednlZcYJJSBgYGBh5ObN61MxLpOVQxsDA2ICRNEz0gri3rczLpRgYGGszonPtOEB7wV1oU8PAwFiaMW/2muN7jWjNkgAGBsZjGXkLRbU5rLp9rIJPN4gYGBiLMnpXYDmgd/VfiHUMDIwNGJPCZG9+UlQoHI8xMDAWZcyvvaptE0msJ8FdOL5iYGA8nFG9LOtdjVXbxZqHWAwMjKUZ+XVbc+85SEUMDAyMXvBN6obJ82arBwYGBkZ8ZK3iqz9cc0+KgYGBcRma88ayqMCJgYGxAaO6vctDs9eKUf7hMDAwlmbM911JpFYxk9ICBgbGQowf++OyUD9hEFwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

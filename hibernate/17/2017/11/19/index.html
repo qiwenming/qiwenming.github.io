@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>SSH与SSM学习之hibernate17——多对一一对多简单操作 | qiwenming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ssm,hibernate">
+    <meta name="description" content="SSH与SSM学习之hibernate17——多对一一对多简单操作一、说明现在有两个表，一个是客户表，一个是联系人表。它们之间存在一对多的关系。 见 SSH与SSM学习之hibernate16——表与表的三种关系 我们来简单实现一下。  二、实体类2.1 Customer 客户实体123456789101112131415161718192021222324package com.qwm.hibe">
+<meta name="keywords" content="ssm,hibernate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH与SSM学习之hibernate17——多对一一对多简单操作">
+<meta property="og:url" content="http://qiwenming.github.io/hibernate/17/2017/11/19/index.html">
+<meta property="og:site_name" content="qiwenming">
+<meta property="og:description" content="SSH与SSM学习之hibernate17——多对一一对多简单操作一、说明现在有两个表，一个是客户表，一个是联系人表。它们之间存在一对多的关系。 见 SSH与SSM学习之hibernate16——表与表的三种关系 我们来简单实现一下。  二、实体类2.1 Customer 客户实体123456789101112131415161718192021222324package com.qwm.hibe">
+<meta property="og:image" content="c:/Users/Administrator/Desktop/jietu/5.png">
+<meta property="og:image" content="c:/Users/Administrator/Desktop/jietu/6.png">
+<meta property="og:image" content="c:/Users/Administrator/Desktop/jietu/7.png">
+<meta property="og:image" content="c:/Users/Administrator/Desktop/jietu/8.png">
+<meta property="og:updated_time" content="2018-01-18T13:51:53.577Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSH与SSM学习之hibernate17——多对一一对多简单操作">
+<meta name="twitter:description" content="SSH与SSM学习之hibernate17——多对一一对多简单操作一、说明现在有两个表，一个是客户表，一个是联系人表。它们之间存在一对多的关系。 见 SSH与SSM学习之hibernate16——表与表的三种关系 我们来简单实现一下。  二、实体类2.1 Customer 客户实体123456789101112131415161718192021222324package com.qwm.hibe">
+<meta name="twitter:image" content="c:/Users/Administrator/Desktop/jietu/5.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="qiwenming" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">qiwenming</h5>
+          <a href="mailto:qiwenmingshiwo@163.com" title="qiwenmingshiwo@163.com" class="mail">qiwenmingshiwo@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/qiwenming" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://blog.csdn.net/qiwenmingshiwo" target="_blank" >
+                <i class="icon icon-lg icon-csdn"></i>
+                Csdn
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SSH与SSM学习之hibernate17——多对一一对多简单操作</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SSH与SSM学习之hibernate17——多对一一对多简单操作</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-19T13:52:08.000Z" itemprop="datePublished" class="page-time">
+  2017-11-19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#SSH与SSM学习之hibernate17——多对一一对多简单操作"><span class="post-toc-text">SSH与SSM学习之hibernate17——多对一一对多简单操作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、说明"><span class="post-toc-text">一、说明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、实体类"><span class="post-toc-text">二、实体类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-1-Customer-客户实体"><span class="post-toc-text">2.1 Customer 客户实体</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-2-LinkMan-联系人实体"><span class="post-toc-text">2.2 LinkMan 联系人实体</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、映射"><span class="post-toc-text">三、映射</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-1-映射说明"><span class="post-toc-text">3.1 映射说明</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-2-Customer-hbm-xml"><span class="post-toc-text">3.2 Customer.hbm.xml</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-3-LinkMan-hbm-xml"><span class="post-toc-text">3.3 LinkMan.hbm.xml</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-4-hibernate-cfg-xml"><span class="post-toc-text">3.4 hibernate.cfg.xml</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、测试demo"><span class="post-toc-text">四、测试demo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-1-保存客户-以及客户-下的联系人"><span class="post-toc-text">4.1 保存客户 以及客户 下的联系人</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-1-1-实例代码"><span class="post-toc-text">4.1.1 实例代码</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-1-2-结果"><span class="post-toc-text">4.1.2 结果</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-2-为客户添加联系人"><span class="post-toc-text">4.2 为客户添加联系人</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-1-实例代码"><span class="post-toc-text">4.2.1 实例代码</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-2-结果"><span class="post-toc-text">4.2.2 结果</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-3-为客户删除联系人"><span class="post-toc-text">4.3 为客户删除联系人</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-1-实例代码"><span class="post-toc-text">4.3.1 实例代码</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-2-结果"><span class="post-toc-text">4.3.2 结果</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-hibernate/17"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">SSH与SSM学习之hibernate17——多对一一对多简单操作</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-19 21:52:08" datetime="2017-11-19T13:52:08.000Z"  itemprop="datePublished">2017-11-19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="SSH与SSM学习之hibernate17——多对一一对多简单操作"><a href="#SSH与SSM学习之hibernate17——多对一一对多简单操作" class="headerlink" title="SSH与SSM学习之hibernate17——多对一一对多简单操作"></a>SSH与SSM学习之hibernate17——多对一一对多简单操作</h1><h2 id="一、说明"><a href="#一、说明" class="headerlink" title="一、说明"></a>一、说明</h2><p>现在有两个表，一个是<strong>客户表</strong>，一个是<strong>联系人表</strong>。它们之间存在一对多的关系。</p>
+<p>见 <a href="http://blog.csdn.net/qiwenmingshiwo/article/details/78025056" target="_blank" rel="noopener">SSH与SSM学习之hibernate16——表与表的三种关系</a></p>
+<p>我们来简单实现一下。</p>
+<hr>
+<h2 id="二、实体类"><a href="#二、实体类" class="headerlink" title="二、实体类"></a>二、实体类</h2><h3 id="2-1-Customer-客户实体"><a href="#2-1-Customer-客户实体" class="headerlink" title="2.1 Customer 客户实体"></a>2.1 Customer 客户实体</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">package com.qwm.hibernate03.domain;</span><br><span class="line"></span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author：qiwenming</span><br><span class="line"> * @date：2017/9/18 0018   21:25</span><br><span class="line"> * @description：</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">public class Customer &#123;</span><br><span class="line">    private Long cust_id;</span><br><span class="line">    private String cust_name;</span><br><span class="line">    private String cust_source;</span><br><span class="line">    private String cust_industry;</span><br><span class="line">    private String cust_level;</span><br><span class="line">    private String cust_linkman;</span><br><span class="line">    private String cust_phone;</span><br><span class="line">    private String cust_mobile;</span><br><span class="line">    //使用set集合,表达一对多的关系</span><br><span class="line">    private Set&lt;LinkMan&gt; linkMens = new HashSet&lt;&gt;();</span><br><span class="line">	....省略了get/set方法...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-LinkMan-联系人实体"><a href="#2-2-LinkMan-联系人实体" class="headerlink" title="2.2 LinkMan 联系人实体"></a>2.2 LinkMan 联系人实体</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">package com.qwm.hibernate03.domain;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author：qiwenming</span><br><span class="line"> * @date：2017/9/18 0018   21:26</span><br><span class="line"> * @description：</span><br><span class="line"> * 联系人</span><br><span class="line"> */</span><br><span class="line">public class LinkMan &#123;</span><br><span class="line">    private Long lkm_id;</span><br><span class="line">    private Character lkm_gender;</span><br><span class="line">    private String lkm_name;</span><br><span class="line">    private String lkm_phone;</span><br><span class="line">    private String lkm_email;</span><br><span class="line">    private String lkm_qq;</span><br><span class="line">    private String lkm_mobile;</span><br><span class="line">    private String lkm_memo;</span><br><span class="line">    private String lkm_position;</span><br><span class="line">    //表达多对一</span><br><span class="line">    private Customer customer;</span><br><span class="line">	....省略了get/set方法...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="三、映射"><a href="#三、映射" class="headerlink" title="三、映射"></a>三、映射</h2><h3 id="3-1-映射说明"><a href="#3-1-映射说明" class="headerlink" title="3.1 映射说明"></a>3.1 映射说明</h3><p>我们需要使用到一对多和多对一映射。这里我们用到的一对多映射是<strong>set</strong>,多对一映射是<strong>many-to-one</strong></p>
+<p><strong>set说明</strong></p>
+<p>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;set name=&quot;linkMens&quot;&gt;</span><br><span class="line">    &lt;key column=&quot;lkm_cust_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">    &lt;one-to-many class=&quot;LinkMan&quot;&gt;&lt;/one-to-many&gt;</span><br><span class="line">&lt;/set&gt;</span><br></pre></td></tr></table></figure></p>
+<p>说明：</p>
+<p>name属性:集合属性名</p>
+<p><key> ：外键</key></p>
+<p>column属性: 外键列名</p>
+<p>one-to-many：一对多</p>
+<p>class属性: 与我关联的对象完整类名</p>
+<hr>
+<p><strong>many-to-one</strong>说明</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;many-to-one name=&quot;customer&quot; column=&quot;lkm_cust_id&quot; class=&quot;Customer&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<p>name属性:引用属性名</p>
+<p>column属性: 外键列名</p>
+<p>class属性: 与我关联的对象完整类名</p>
+<p>==注意：<set>中的<key>的column必须与 many-to-one 中的column一致==</key></set></p>
+<hr>
+<h3 id="3-2-Customer-hbm-xml"><a href="#3-2-Customer-hbm-xml" class="headerlink" title="3.2 Customer.hbm.xml"></a>3.2 Customer.hbm.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;&gt;</span><br><span class="line">&lt;hibernate-mapping package=&quot;com.qwm.hibernate03.domain&quot; &gt;</span><br><span class="line">    &lt;class name=&quot;Customer&quot; table=&quot;cst_customer&quot; &gt;</span><br><span class="line">        &lt;id name=&quot;cust_id&quot;  &gt;</span><br><span class="line">            &lt;generator class=&quot;native&quot;&gt;&lt;/generator&gt;</span><br><span class="line">        &lt;/id&gt;</span><br><span class="line">        &lt;property name=&quot;cust_name&quot; column=&quot;cust_name&quot; &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;cust_source&quot; column=&quot;cust_source&quot; &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;cust_industry&quot; column=&quot;cust_industry&quot; &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;cust_level&quot; column=&quot;cust_level&quot; &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;cust_linkman&quot; column=&quot;cust_linkman&quot; &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;cust_phone&quot; column=&quot;cust_phone&quot; &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;cust_mobile&quot; column=&quot;cust_mobile&quot; &gt;&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 集合,一对多关系,在配置文件中配置 --&gt;</span><br><span class="line">        &lt;!--</span><br><span class="line">            name属性:集合属性名</span><br><span class="line">            column属性: 外键列名</span><br><span class="line">            class属性: 与我关联的对象完整类名</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;set name=&quot;linkMens&quot; inverse=&quot;true&quot; cascade=&quot;delete&quot;&gt;</span><br><span class="line">            &lt;key column=&quot;lkm_cust_id&quot;&gt;&lt;/key&gt;</span><br><span class="line">            &lt;one-to-many class=&quot;LinkMan&quot;&gt;&lt;/one-to-many&gt;</span><br><span class="line">        &lt;/set&gt;</span><br><span class="line">    &lt;/class&gt;</span><br><span class="line">&lt;/hibernate-mapping&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-3-LinkMan-hbm-xml"><a href="#3-3-LinkMan-hbm-xml" class="headerlink" title="3.3 LinkMan.hbm.xml"></a>3.3 LinkMan.hbm.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;&gt;</span><br><span class="line">&lt;hibernate-mapping package=&quot;com.qwm.hibernate03.domain&quot; &gt;</span><br><span class="line">    &lt;class name=&quot;LinkMan&quot; table=&quot;cst_linkman&quot; &gt;</span><br><span class="line">        &lt;id name=&quot;lkm_id&quot;  &gt;</span><br><span class="line">            &lt;generator class=&quot;native&quot;&gt;&lt;/generator&gt;</span><br><span class="line">        &lt;/id&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_gender&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_name&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_phone&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_email&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_qq&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_mobile&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_memo&quot;  &gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;lkm_position&quot;  &gt;&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 多对一 --&gt;</span><br><span class="line">        &lt;!--</span><br><span class="line">            name属性:引用属性名</span><br><span class="line">            column属性: 外键列名</span><br><span class="line">            class属性: 与我关联的对象完整类名</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;many-to-one name=&quot;customer&quot; column=&quot;lkm_cust_id&quot; class=&quot;Customer&quot;/&gt;</span><br><span class="line">    &lt;/class&gt;</span><br><span class="line">&lt;/hibernate-mapping&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-4-hibernate-cfg-xml"><a href="#3-4-hibernate-cfg-xml" class="headerlink" title="3.4 hibernate.cfg.xml"></a>3.4 hibernate.cfg.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE hibernate-configuration PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Configuration DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;&gt;</span><br><span class="line">&lt;hibernate-configuration&gt;</span><br><span class="line">    &lt;session-factory&gt;</span><br><span class="line">        &lt;!--数据库驱动--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.connection.driver_class&quot;&gt;com.mysql.jdbc.Driver&lt;/property&gt;</span><br><span class="line">        &lt;!--数据库url--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:mysql://localhost:3306/htest&lt;/property&gt;</span><br><span class="line">        &lt;!--数据库连接用户名--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.connection.username&quot;&gt;root&lt;/property&gt;</span><br><span class="line">        &lt;!--数据库连接密码--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.connection.password&quot;&gt;xm123456&lt;/property&gt;</span><br><span class="line">        &lt;!--数据库方言--&gt;</span><br><span class="line">        &lt;!-- 数据库方言</span><br><span class="line">			不同的数据库中,sql语法略有区别. 指定方言可以让hibernate框架在生成sql语句时.针对数据库的方言生成.</span><br><span class="line">			sql99标准: DDL 定义语言  库表的增删改查</span><br><span class="line">					   DCL 控制语言  事务 权限</span><br><span class="line">					  DML 操纵语言  增删改查</span><br><span class="line">		 --&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQL5Dialect&lt;/property&gt;</span><br><span class="line">        &lt;!-- #hibernate.show_sql true</span><br><span class="line">     #hibernate.format_sql true</span><br><span class="line">--&gt;</span><br><span class="line">        &lt;!-- 将hibernate生成的sql语句打印到控制台 --&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.show_sql&quot;&gt;true&lt;/property&gt;</span><br><span class="line">        &lt;!-- 将hibernate生成的sql语句格式化(语法缩进) --&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.format_sql&quot;&gt;true&lt;/property&gt;</span><br><span class="line">        &lt;!--</span><br><span class="line">        ## auto schema export  自动导出表结构. 自动建表</span><br><span class="line">        #hibernate.hbm2ddl.auto create		自动建表.每次框架运行都会创建新的表.以前表将会被覆盖,表数据会丢失.(开发环境中测试使用)</span><br><span class="line">        #hibernate.hbm2ddl.auto create-drop 自动建表.每次框架运行结束都会将所有表删除.(开发环境中测试使用)</span><br><span class="line">        #hibernate.hbm2ddl.auto update(推荐使用) 自动生成表.如果已经存在不会再生成.如果表有变动.自动更新表(不会删除任何数据).</span><br><span class="line">        #hibernate.hbm2ddl.auto validate	校验.不自动生成表.每次启动会校验数据库中表是否正确.校验失败.</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;!--自动创建表--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.hbm2ddl.auto&quot;&gt;update&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--指定session与当前线程绑定--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.current_session_context_class&quot;&gt;thread&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--导入 User 配置--&gt;</span><br><span class="line">        &lt;!-- 引入orm元数据</span><br><span class="line">			路径书写: 填写src下的路径</span><br><span class="line">		 --&gt;</span><br><span class="line">        &lt;mapping resource=&quot;com/qwm/hibernate03/domain/Customer.hbm.xml&quot;&gt;&lt;/mapping&gt;</span><br><span class="line">        &lt;mapping resource=&quot;com/qwm/hibernate03/domain/LinkMan.hbm.xml&quot;&gt;&lt;/mapping&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/session-factory&gt;</span><br><span class="line">&lt;/hibernate-configuration&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="四、测试demo"><a href="#四、测试demo" class="headerlink" title="四、测试demo"></a>四、测试demo</h2><h3 id="4-1-保存客户-以及客户-下的联系人"><a href="#4-1-保存客户-以及客户-下的联系人" class="headerlink" title="4.1 保存客户 以及客户 下的联系人"></a>4.1 保存客户 以及客户 下的联系人</h3><h4 id="4-1-1-实例代码"><a href="#4-1-1-实例代码" class="headerlink" title="4.1.1 实例代码"></a>4.1.1 实例代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 保存客户 以及客户 下的联系人</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test1()&#123;</span><br><span class="line">    //1.获取session</span><br><span class="line">    Session session = HibernateUtils.openSession();</span><br><span class="line">    //2.开启事务</span><br><span class="line">    Transaction t = session.beginTransaction();</span><br><span class="line">    //3.操作</span><br><span class="line"></span><br><span class="line">    Customer c = new Customer();</span><br><span class="line">    c.setCust_name(&quot;吊毛公司&quot;);</span><br><span class="line"></span><br><span class="line">    LinkMan lm1 = new LinkMan();</span><br><span class="line">    lm1.setLkm_name(&quot;李吊毛&quot;);</span><br><span class="line"></span><br><span class="line">    LinkMan lm2 = new LinkMan();</span><br><span class="line">    lm2.setLkm_name(&quot;高小飞&quot;);</span><br><span class="line"></span><br><span class="line">    //表达一对多,客户下有多个联系人</span><br><span class="line">    c.getLinkMens().add(lm1);</span><br><span class="line">    c.getLinkMens().add(lm2);</span><br><span class="line"></span><br><span class="line">    //表达多对一,联系人属于哪个客户</span><br><span class="line">    lm1.setCustomer(c);</span><br><span class="line">    lm2.setCustomer(c);</span><br><span class="line">    session.save(c);</span><br><span class="line">    session.save(lm1);</span><br><span class="line">    session.save(lm2);</span><br><span class="line"></span><br><span class="line">    //4.提交事务</span><br><span class="line">    t.commit();</span><br><span class="line">    //5.关闭资源</span><br><span class="line">    session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-1-2-结果"><a href="#4-1-2-结果" class="headerlink" title="4.1.2 结果"></a>4.1.2 结果</h4><p><strong>客户表</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="C:\Users\Administrator\Desktop\jietu\5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p><strong>联系人表</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="C:\Users\Administrator\Desktop\jietu\6.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<hr>
+<h3 id="4-2-为客户添加联系人"><a href="#4-2-为客户添加联系人" class="headerlink" title="4.2 为客户添加联系人"></a>4.2 为客户添加联系人</h3><h4 id="4-2-1-实例代码"><a href="#4-2-1-实例代码" class="headerlink" title="4.2.1 实例代码"></a>4.2.1 实例代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 为客户添加联系人</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test2()&#123;</span><br><span class="line">	//1.获取session</span><br><span class="line">	Session session = HibernateUtils.openSession();</span><br><span class="line">	//2.开启事务</span><br><span class="line">	Transaction t = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">	//3.操作</span><br><span class="line">	//3.1获取到客户</span><br><span class="line">	//3.2创建我们的联系人</span><br><span class="line">	//3.3把联系人添加到客户的中</span><br><span class="line">	//3.4把客户添加到联系人中</span><br><span class="line">	//3.5保存联系人</span><br><span class="line">	Customer c = session.get(Customer.class,1L);</span><br><span class="line">	LinkMan lm1 = new LinkMan();</span><br><span class="line">	lm1.setLkm_name(&quot;小明&quot;);</span><br><span class="line">	c.getLinkMens().add(lm1);</span><br><span class="line">	lm1.setCustomer(c);</span><br><span class="line">	session.save(lm1);</span><br><span class="line">	//4.提交事务</span><br><span class="line">	t.commit();</span><br><span class="line">	//5.关闭资源</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-2-结果"><a href="#4-2-2-结果" class="headerlink" title="4.2.2 结果"></a>4.2.2 结果</h4><p><strong>联系人表</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="C:\Users\Administrator\Desktop\jietu\7.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<hr>
+<h3 id="4-3-为客户删除联系人"><a href="#4-3-为客户删除联系人" class="headerlink" title="4.3 为客户删除联系人"></a>4.3 为客户删除联系人</h3><h4 id="4-3-1-实例代码"><a href="#4-3-1-实例代码" class="headerlink" title="4.3.1 实例代码"></a>4.3.1 实例代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 为客户删除联系人</span><br><span class="line"> */</span><br><span class="line">@Test</span><br><span class="line">public void test3()&#123;</span><br><span class="line">	//1.获取session</span><br><span class="line">	Session session = HibernateUtils.openSession();</span><br><span class="line">	//2.开启事务</span><br><span class="line">	Transaction t = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">	//3.操作</span><br><span class="line">	//3.1获取到客户</span><br><span class="line">	//3.2获得要移除的联系人</span><br><span class="line">	//3.3将联系人从客户集合中移除</span><br><span class="line">	Customer c = session.get(Customer.class,1L);</span><br><span class="line">	LinkMan lm = session.get(LinkMan.class,3L);</span><br><span class="line">	c.getLinkMens().remove(lm);</span><br><span class="line">	lm.setCustomer(null);</span><br><span class="line">	//4.提交事务</span><br><span class="line">	t.commit();</span><br><span class="line">	//5.关闭资源</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-3-2-结果"><a href="#4-3-2-结果" class="headerlink" title="4.3.2 结果"></a>4.3.2 结果</h4><p><strong>联系人表</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="C:\Users\Administrator\Desktop\jietu\8.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-01-18T13:51:53.577Z" itemprop="dateUpdated">2018-01-18 21:51:53</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/hibernate/17/2017/11/19/" target="_blank" rel="external">http://qiwenming.github.io/hibernate/17/2017/11/19/</a>
+        
+    </div>
+    <footer>
+        <a href="http://qiwenming.github.io">
+            <img src="/img/avatar.jpg" alt="qiwenming">
+            qiwenming
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssm/">ssm</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/17/2017/11/19/&title=《SSH与SSM学习之hibernate17——多对一一对多简单操作》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/17/2017/11/19/&title=《SSH与SSM学习之hibernate17——多对一一对多简单操作》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/17/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate17——多对一一对多简单操作》 — qiwenming&url=http://qiwenming.github.io/hibernate/17/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/17/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/hibernate/18/2017/11/19/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">SSH与SSM学习之hibernate18——多对一一对多级联操作</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/hibernate/16/2017/11/19/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">SSH与SSM学习之hibernate16——表与表的三种关系</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>qiwenming &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/hibernate/17/2017/11/19/&title=《SSH与SSM学习之hibernate17——多对一一对多简单操作》 — qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/hibernate/17/2017/11/19/&title=《SSH与SSM学习之hibernate17——多对一一对多简单操作》 — qiwenming&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/hibernate/17/2017/11/19/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSH与SSM学习之hibernate17——多对一一对多简单操作》 — qiwenming&url=http://qiwenming.github.io/hibernate/17/2017/11/19/&via=http://qiwenming.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/hibernate/17/2017/11/19/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQW6EMBAEwPz/05tLDpEiSLeHXQlTnCIC2LWHkcftr6/4ev26ft85eubvk+fPnz952YWBgXFbxuv0SgY4eusvOPn++f3DmWBgYDyAcTS5ZCpJSW2fzOeGgYGBMSG1kz4fCwMDA+MqRr5wbMfFwMDASJrYZOtt8rUP9eIYGBg3ZOS77p//+y35BgYGxq0Yr/J6R244mc/PNzEwMLZm5AWuXZbNF5ft9zEwMHZlnL+QlNr2rXZzLQkPMDAw9mZMmti1Lf584ZiMstjuYmBg3JaRb823S8D898ufP/wOBgbG1oy2El8VauZxZjFDDAyM7RhrhxvWIoE8bKgbYwwMjE0Zay3l2jZccsBiLUDFwMDYmzFpYtujGG38sBYYYGBg7M3Ig8nJVn470cWIFAMDYztGO1hbCiffr8NLDAyMRzLyLbb8yEWyJK2LMgYGxtaMtnQmg60Fk5edGcHAwNiI8Y5DYPP4s30XAwNjb0Y79aT4roWX7WG1ItnAwMDYiDHZMkuWgEmxbsH/9OIYGBjbMfK2s10OTrb+84KOgYHxTEZLnbe7k4KOgYGxK2Nt22stHkimldxfTFYxMDBuy8iv/FBF/t/2cEYecGJgYOzHmDeik8CgLcQYGBhPZqwVvnxJ17bBbRSKgYGBkR/tSlageRtc12kMDAyMpc21yYGwIuDEwMB4ACMPA9pJT45uFD8cBgbG1oz5umutxW0L8QWhJgYGxv0Y37k70T83ME4+AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

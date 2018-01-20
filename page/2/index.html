@@ -13,7 +13,7 @@
     
     
     
-    <title>Archives | qiwenming</title>
+    <title>qiwenming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -22,7 +22,7 @@
     <meta name="keywords" content="">
     <meta property="og:type" content="website">
 <meta property="og:title" content="qiwenming">
-<meta property="og:url" content="http://qiwenming.github.io/archives/index.html">
+<meta property="og:url" content="http://qiwenming.github.io/page/2/index.html">
 <meta property="og:site_name" content="qiwenming">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="qiwenming">
@@ -67,7 +67,7 @@
               </a>
             </li>
         
-            <li class="waves-block waves-effect active">
+            <li class="waves-block waves-effect">
               <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 归档
@@ -113,7 +113,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">Archives</div>
+        <div class="flex-col header-title ellipsis">qiwenming</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -132,11 +132,13 @@
         
     </div>
 </header>
-<header class="content-header archives-header">
+<header class="content-header index-header">
 
     <div class="container fade-scale">
-        <h1 class="title">Archives</h1>
+        <h1 class="title">qiwenming</h1>
         <h5 class="subtitle">
+            
+                
             
         </h5>
     </div>
@@ -146,37 +148,49 @@
 
 </header>
 
-<div class="container body-wrap fade">
-    
+<div class="container body-wrap">
 
+    <ul class="post-list">
     
-            
-            <h3 class="archive-separator">November, 2017</h3>
-            <div class="waterfall">
-    
+        <li class="post-list-item fade">
+            <article id="post-hibernate/15"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:16" datetime="2017-11-19T13:52:16.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:52:06" datetime="2017-11-19T13:52:06.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/25/2017/11/19/">SSH与SSM学习之hibernate25——批量抓取</a>
+      <a class="post-title-link" href="/hibernate/15/2017/11/19/">SSH与SSM学习之hibernate15——SQL原生查询</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate15——SQL原生查询一、原生查询说明原生查询我们只要使用到的方法是：
+123456789//执行原生的sqlsession.createSQLQuery(sql)//指定将结果集封装到哪个对象中query.addEntity(User.class);//添加参数 query.setParameter(0,1);
+
+二、基本查询2.1 示例代码12345...
+    
+
+        <a href="/hibernate/15/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -184,33 +198,47 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/14"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:15" datetime="2017-11-19T13:52:15.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:52:05" datetime="2017-11-19T13:52:05.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/24/2017/11/19/">SSH与SSM学习之hibernate24——关联级别加载策略之属性关联加载策略</a>
+      <a class="post-title-link" href="/hibernate/14/2017/11/19/">SSH与SSM学习之hibernate14——Criteria查询</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate14——Criteria查询一、Criteria比较适合单表查询。Hibernate自创的无语句面向对象查询。
+Criteria 中拥有查询的方法，如 list() ,uniqueResult()等。二、基本查询2.1 示例代码1234567891011121314151617181920/** * Criteria基本查询 */@Testpublic ...
+    
+
+        <a href="/hibernate/14/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -218,33 +246,56 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/13"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:14" datetime="2017-11-19T13:52:14.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:52:04" datetime="2017-11-19T13:52:04.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/23/2017/11/19/">SSH与SSM学习之hibernate23——关联级别加载策略之集合关联加载策略</a>
+      <a class="post-title-link" href="/hibernate/13/2017/11/19/">SSH与SSM学习之hibernate13——HQL查询</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate13——HQL查询一、hibernate查询说明hibernate查询，主要使用以下三种
+
+HQL查询-hibernate Query Language(主要用于多表查询,但不复杂时使用)
+
+Criteria查询(主要用于单表条件查询)
+
+原生SQL查询(复杂的业务查询)
+
+
+
+二、HQL查询HQL查询-hibernate Query Language(...
+    
+
+        <a href="/hibernate/13/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -252,33 +303,58 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/12"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:13" datetime="2017-11-19T13:52:13.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:52:03" datetime="2017-11-19T13:52:03.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/22/2017/11/19/">SSH与SSM学习之hibernate22——类级别加载策略</a>
+      <a class="post-title-link" href="/hibernate/12/2017/11/19/">SSH与SSM学习之hibernate12——hibernate中的事务</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate12——hibernate中的事务一、事务1.1 事务特性原子性
+一致性
+隔离性
+持久性
+1.2 事务并发问题脏读
+不可重复度
+幻|虚读
+1.3 事务隔离级别读未提交（脏读、不可重复度、幻|虚读）
+读已提交（不可重复度、幻|虚读）
+可重复读(mysql默认级别)（幻|虚读）
+串行化 - 没有问题
+
+二、如何在hibernate中指定数据库的隔离级别配置事...
+    
+
+        <a href="/hibernate/12/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -286,33 +362,46 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/11"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:12" datetime="2017-11-19T13:52:12.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:52:02" datetime="2017-11-19T13:52:02.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/21/2017/11/19/">SSH与SSM学习之hibernate21——离线查询</a>
+      <a class="post-title-link" href="/hibernate/11/2017/11/19/">SSH与SSM学习之hibernate11——二级缓存</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate11——二级缓存一、一级缓存解决不了多个session的问题比如现在我们查询的数据，基本是不变的，在一级缓存（session缓存）下，我们如果是同一个session,那么有数据被缓存，但是如果我们是多个session的话，那么我们还是会多次去访问数据。然而由于数据是不变的，我们完全没必要呀。我们想要实现的就是多个session也能够直接使用，而不去查询，...
+    
+
+        <a href="/hibernate/11/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -320,33 +409,50 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/10"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:11" datetime="2017-11-19T13:52:11.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:52:01" datetime="2017-11-19T13:52:01.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/20/2017/11/19/">SSH与SSM学习之hibernate20——多对多操作</a>
+      <a class="post-title-link" href="/hibernate/10/2017/11/19/">SSH与SSM学习之hibernate10——Hibernate的一级缓存</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate10——Hibernate的一级缓存一、Hibernate的一级缓存1 缓存是计算机领域非常通用的概念。它介于应用程序和永久性数据存储源(如硬盘上的文件或者数据库)之间，
+其作用是降低应用程序直接读写永久性数据存储源的频率，从而提高应用的运行性能。
+缓存中的数据是数据存储源中数据的拷贝。缓存的物理介质通常是内存。
+
+2 hibernate的缓存分为一级缓...
+    
+
+        <a href="/hibernate/10/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -354,33 +460,49 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/09"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:10" datetime="2017-11-19T13:52:10.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:52:00" datetime="2017-11-19T13:52:00.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/19/2017/11/19/">SSH与SSM学习之hibernate19——多对一一对多关系维护</a>
+      <a class="post-title-link" href="/hibernate/09/2017/11/19/">SSH与SSM学习之hibernate09——对象的三种状态</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate09——对象的三种状态一、对象的三种状态hibernate中，对象拥有三种状态：瞬时状态、持久化状态、游离|托管状态。
+1.1 瞬时状态瞬时状态：没有id,没有在session缓存中。
+例如下面的user实例就是 瞬时状态
+123User user = new User();// 瞬时状态。没有id，没有与session 关联user.setName(&...
+    
+
+        <a href="/hibernate/09/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -388,33 +510,55 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/08"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:09" datetime="2017-11-19T13:52:09.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:51:59" datetime="2017-11-19T13:51:59.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/18/2017/11/19/">SSH与SSM学习之hibernate18——多对一一对多级联操作</a>
+      <a class="post-title-link" href="/hibernate/08/2017/11/19/">SSH与SSM学习之hibernate08——hibernate中的实体规则</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate08——hibernate中的实体规则一、实体类创建的注意事项
+持久化类提供无参数构造
+
+成员变量私有,提供共有get/set方法访问.需提供属性（JavaBean）
+
+持久化类中的属性,应尽量使用包装类型
+
+持久化类需要提供oid.与数据库中的主键列对应
+
+不要用final修饰 class ( hibernate使用cglib代理生成代理对象.代理对象...
+    
+
+        <a href="/hibernate/08/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -422,33 +566,51 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/07"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:08" datetime="2017-11-19T13:52:08.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:51:58" datetime="2017-11-19T13:51:58.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/17/2017/11/19/">SSH与SSM学习之hibernate17——多对一一对多简单操作</a>
+      <a class="post-title-link" href="/hibernate/07/2017/11/19/">SSH与SSM学习之hibernate07——Transaction</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate07——Transaction一、TransactionTransaction 封装了事务的操作。
+1.1 开启事务开启事务有两种方式，推荐第二种
+方式一
+12Transaction t = session.getTransaction();t.begin();
+方式二
+1Transaction t = session.beginTransaction(...
+    
+
+        <a href="/hibernate/07/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -456,33 +618,51 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-hibernate/06"
+  class="article-card article-type-post" itemprop="blogPost">
 
-        <div class="waterfall-item">
-  <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2017-11-19 21:52:07" datetime="2017-11-19T13:52:07.000Z"  itemprop="datePublished">2017-11-19</time>
+        <time class="post-time" title="2017-11-19 21:51:57" datetime="2017-11-19T13:51:57.000Z"  itemprop="datePublished">2017-11-19</time>
 
-      
+        
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/">ssm</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ssm/hibernate/">hibernate</a></li></ul></li></ul>
 
 
 
     </div>
+
     
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/hibernate/16/2017/11/19/">SSH与SSM学习之hibernate16——表与表的三种关系</a>
+      <a class="post-title-link" href="/hibernate/06/2017/11/19/">SSH与SSM学习之hibernate06——Session</a>
     </h3>
   
 
 
 
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SSH与SSM学习之hibernate06——Session一、Sessionsession对象功能:
+表达hibernate框架与数据库之间的连接(会话).session类似于JDBC年代的connection对象.
+还可以完成对数据库中数据的增删改查操作.
+session是hibernate操作数据库的核心对象
+数据的CRUD操作方法
+12345Serializable save(Obj...
+    
+
+        <a href="/hibernate/06/2017/11/19/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
     
     <div class="post-footer">
         
@@ -490,18 +670,19 @@
 
     </div>
     
-  </article>
-</div>
+</article>
 
+        </li>
     
-    </div>
+    </ul>
 
     
 <nav id="page-nav">
     <div class="inner">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/">下一页</a>
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
     </div>
 </nav>
+
 
 </div>
 
@@ -544,7 +725,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/archives/&title=qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://qiwenming.github.io/page/2/&title=qiwenming&pic=http://qiwenming.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -554,22 +735,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/archives/&title=qiwenming&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://qiwenming.github.io/page/2/&title=qiwenming&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/archives/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://qiwenming.github.io/page/2/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=qiwenming&url=http://qiwenming.github.io/archives/&via=http://qiwenming.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=qiwenming&url=http://qiwenming.github.io/page/2/&via=http://qiwenming.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/archives/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://qiwenming.github.io/page/2/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -580,7 +761,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABw0lEQVR42u3aMW7DMAwF0Nz/0i7QKYvVT9JSUuBpKhzZeupAUKRer3hcvyN5/v7kehv5Nx8YuLi4Y+61HGvW3cy7J8lbd3NwcXHPc9eBprqB9Zbuvh8FO1xc3C/jJrh1crOej4uL+x+5SVIySYNwcXG/jZsfTvKNredvP6vh4uIOuNWC6Y6/N9Z3cXFxi9yrOPK3JknS7TdxcXGPcJNGaS+c7TsO4eLinuFWw8pkw71MBhcX9yS3UKYM0pSkiZJs43bzuLi4R7j51OolrXnRM3oXFxd3M/epBfa1aXFxcc9w81ZoHrzmiVH0H8XFxd3GnV+eqF7UqCZPuLi4n+Im5YxeYOodjaJt4OLiHuH2jjHVtutThRhcXNx93F6Qyhse1abLH2vh4uIe4VZvNew+6kT1XVxc3M3cJHBUF6iWYpO0CRcX9zw3T0fKbY/xwMXF/RQ3H3nQqZZLCj0fXFzczdzepas8McrTo+qvuLi4u7l58JovNgmIuLi457nV4JUs0yutPlDfxcXFPchNUpw1qHepqxnIcHFxP8qtFlN6oRAXF/c8t5eg9BKdvBE7Kovg4uIOuL2CabUZky/cewsXF/ch7g9gwmzD/CZgGwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABx0lEQVR42u3aQW7DMAwEQP//0+41gFt7KUpyUIxOhY0qkxwILanjiNf5sa5PPp/f/9f17bFi4eLitrnn7Zr7wdc9cwMuLu5+br51UuDyt7kBFxf3+7n3lOQJLi7uf+KORZ1OocTFxX2Lm4Sfe1Yen/K3uLi4b3H77Yz+30v6u7i4uEPcs7iSsUqnMfrw6bi4uFu4eUG5P9bkh5hqTMLFxd3PvY8Z/UAyduZ6KGG4uLivcvst1KTY5UcfXFzct7hjWyfD12qI+uXnwMXF3cLNL1LMupKVh6WHrIaLi7uMm5eh/LpGf0T6UMJwcXEXc/Oik0egWU3Sct3FxcWdyp3VCukMU6vFFBcXdzU3+R7V9kf/hlU0E8bFxV3G7Tcyou7L0PpzB1xc3MXc/NJVfmGr2mDNyyUuLu5+bv8o0zn6FMIPLi7uFm4eeJLBST8alV/j4uJO4o61NfPnY/u0uim4uLhtbrU9kRyDqtc1ZoUrXFzcudy86IxNbvOLXBMOOri4uFO51UKTB57+cKXcFsHFxX2JW22gJF8gikO4uLhfzB0LOWPFa1rdxcXFLXIHr07GxWtsWIuLi/sWtxw/hlob/fEMLi7uFu4PktPDQl6thXMAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
